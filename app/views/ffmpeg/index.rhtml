@@ -1,0 +1,22 @@
+<%= link_to 'stream1', :controller => 'ffmpeg', :action => 'go',  :filename => 'stream1'%>
+<%= link_to 'stream2', :controller => 'ffmpeg', :action => 'go',  :filename => 'stream2'%>
+
+<br />
+<% if @worker_uno%>
+	<%= link_to 'status_uno', :controller => 'ffmpeg', :action => 'status',  :worker => @worker_uno%>
+<% end %>
+
+
+<br />
+
+<% if @worker_due%>
+	<%= link_to 'status_due', :controller => 'ffmpeg', :action => 'status',  :worker => @worker_due%>
+<% end%>
+
+
+<br />
+
+
+<% if @worker_info%>
+	<%= @worker_info.inspect%>
+<% end %>

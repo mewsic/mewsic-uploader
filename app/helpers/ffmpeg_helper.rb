@@ -1,0 +1,2 @@
+module FfmpegHelper
+end
