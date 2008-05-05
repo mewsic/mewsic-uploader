@@ -1,6 +1,6 @@
 module Ffmpeg
   
-  require "open3"
+#  require "open3"
   
   class Ffmpeg  
     attr_accessor :status, :progress, :line
