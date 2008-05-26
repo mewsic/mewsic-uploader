@@ -38,17 +38,16 @@ module Sox
           sleep @sleep_time
         end
         
+        
+        #check_file(command_container[:output])
+        
         # controllo che il comando non sia andato in errore
-        if current_command.status == :error
-          exit_with_error
-          break
-        end
+        #if current_command.status == :error
+        #  exit_with_error
+        #  break
+        #end
                 
       end
-      
-      
-      puts "finito il tutto ---- #{output_name}"
-      
     end
     
     
@@ -63,6 +62,39 @@ protected
       @status = :error
       @alive = false
     end
+    
+    def check_file(filename)
+      # il check file è una procedura un po' delicata
+      # mantenendo lo stesso contesto è sempre a false
+      # anche se il file esiste, per cui aggiungo un
+      # un nuovo worker, così sono sicura del risultato
+      worker_key = "checker_#{filename}"  
+      worker_args = {:worker_key => worker_key, :filename => filename}
+      MiddleMan.new_worker(:worker => :checker_worker, :job_key => worker_key, :data => worker_args) 
+      MiddleMan.worker(:checker_worker, worker_key).start
+
+      sleep 5    
+      
+      exit_with_error unless ask_exist?(worker_key)
+    #  puts "CHECK FILE #{filename}"
+    #  puts "# #{File.file?(filename)}"
+      
+      
+    end
+    
+    def ask_exist?(worker_key)
+      
+      
+      puts "ASK EXIST"
+      
+      worker_info = MiddleMan.worker(:checker_worker, worker_key ).ask_status
+      
+      puts "WORKER_INFO"
+      puts worker_info.inspect
+      
+      worker_info[:status]
+    end
+
   end # end soxCommandList class
   
   class SoxCommand
@@ -89,8 +121,8 @@ protected
             end            
           
           @status = :finished
-          
-          check_file 
+          @alive = false
+          #check_file 
           
           puts "2.  il comando è finito " 
           puts "    il nostro status è #{@status}"
@@ -112,11 +144,7 @@ protected
       @alive
     end
   
-  protected
-    def check_file
-      @alive = false
-      @status = :error unless File.exist?(@output)
-    end
+
     
   end
   

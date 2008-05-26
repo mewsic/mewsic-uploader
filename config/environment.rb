@@ -51,11 +51,12 @@ end
 # end
 
 # Include your application configuration below
-FLV_INPUT_DIR = "#{RAILS_ROOT}/spool"
-MP3_OUTPUT_DIR = "/data/myousica/shared/audio"
+FLV_INPUT_DIR = "/var/www/Medlar/public/"
+MP3_OUTPUT_DIR = "/var/www/Medlar/public/"
+
 
 # attributi NECESSARI per le conversioni etc...
 AR = 44100
-AB = 96
+AB = 160
 AC = 2
 OVERWRITE_EXISTING = "-y"

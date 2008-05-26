@@ -1,5 +1,5 @@
 require "#{RAILS_ROOT}/lib/ffmpeg"
-
+require "#{RAILS_ROOT}/lib/clear"
 class FfmpegWorker < BackgrounDRb::MetaWorker
 
   include Ffmpeg
@@ -32,7 +32,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
     
     update_status(ffmpeg_process.status)
    
-    
+    clear(filename)
   end
   
 protected
@@ -42,6 +42,9 @@ protected
       }
     register_status(progress_info)
     
+  end
+  def clear(filename)
+    Clear.all(FLV_INPUT_DIR, "#{filename}.flv")
   end
 
     

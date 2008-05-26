@@ -1,4 +1,5 @@
 require "#{RAILS_ROOT}/lib/sox"
+require "#{RAILS_ROOT}/lib/clear"
 
 class SoxWorker < BackgrounDRb::MetaWorker
   include Sox
@@ -16,10 +17,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
   
   
   def start(arg_commands)
-    
-    
-    puts "WORKER START"
-    
+        
     # avvio il tutto il commandlist esegue un comando alla volta
     sox_process = SoxCommandList.new
     sox_process.commands(arg_commands, @output_name)
@@ -33,11 +31,16 @@ class SoxWorker < BackgrounDRb::MetaWorker
       
       sleep @sleep_time
     end
-    
-    
-    
-    
     update_status(sox_process.status)
+    
+    
+    # finiti tutti i passaggi di encoding 
+    
+    # 1. mando un clear storage
+    clear
+    
+    # 2. controllo effettivamente che il file esista
+    update_status(:error) unless check_output(arg_commands)
     
   end
   
@@ -47,11 +50,17 @@ protected
         :status => status
       }
     register_status(progress_info)
-    
   end
-
-
   
+  def clear
+    Clear.all(MP3_OUTPUT_DIR, "effect")
+  end
   
+  def check_output(commands)
+    # qui sappiamo che il file che ci interessa è l'ultimo
+    command = commands.last
+    # eseguo il check vero e proprio
+    File.exist(command[:output])
+  end
 end
 

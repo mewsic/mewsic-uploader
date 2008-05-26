@@ -6,19 +6,17 @@ class SoxController < ApplicationController
 
   
   def export_song
-    
-    
+    doc_line = "<song><track><filename>uno.mp3</filename><volume>0.5</volume><loop>0</loop><balance>-0.2</balance></track><track><filename>due.mp3</filename><volume>0.1</volume><loop>0</loop><balance>0</balance><time_shift>0</time_shift></track></song>"
+        
     user_id = params[:user]
     output_name = "#{params[:user]}_#{Time.now.to_i.to_s}"
-    tracklist = Tracklist.new(params[:song], output_name)
+    #tracklist = Tracklist.new(params[:song], output_name)
+    tracklist = Tracklist.new(doc_line, output_name)
     
     # aspetto che la tracklist finisca...
     while tracklist.running?
       sleep 2
     end
-    
-    logger.info("------------------------")
-    logger.info(tracklist.commands.inspect)
     
     
     # ho i comandi, faccio partire il worker
