@@ -46,6 +46,7 @@ task :production do
   role :web, '65.74.174.196:8222' # mongrel, mongrel
   role :app, '65.74.174.196:8222', :mongrel => true, :mongrel => true
   role :db, '65.74.174.196:8222', :primary => true
+  role :brb, '65.74.174.196:8221'
   
   #role :app, '65.74.174.196:8222', :no_release => true, :mongrel => true, :mongrel => true
   
@@ -68,9 +69,8 @@ task :symlink_audio, :roles => [:app, :web], :except => {:no_release => true, :n
 end
 
 after "deploy", "restart_bgrb"
-task :restart_bgrb, :roles => [:app, :web], :except => {:no_release => true} do
-  run "ruby #{latest_release}/script/backgroundrb stop"
-  run "ruby #{latest_release}/script/backgroundrb start -e production"
+task :restart_bgrb, :roles => [:brb] do
+  run "ruby #{latest_release}/script/backgroundrb -e production restart"
 end
 
 # =============================================================================
