@@ -46,7 +46,7 @@ task :production do
   role :web, '65.74.174.196:8222' # mongrel, mongrel
   role :app, '65.74.174.196:8222', :mongrel => true, :mongrel => true
   role :db, '65.74.174.196:8222', :primary => true
-  role :brb, '65.74.174.196:8221'
+  role :brb, '65.74.174.196:8221', :no_release => true
   
   #role :app, '65.74.174.196:8222', :no_release => true, :mongrel => true, :mongrel => true
   
