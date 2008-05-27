@@ -28,6 +28,10 @@ class SoxController < ApplicationController
     worker_key = params[:worker] || worker
     worker_info = MiddleMan.worker(:sox_worker, worker_key ).ask_status
     
+    if worker_info[:status] == 'finished'
+      MiddleMan.delete_worker(:worker => :sox_worker, :job_key => worker_key)
+    end 
+
     render :xml => worker_status(worker_key, worker_info[:status])    
   end
 
