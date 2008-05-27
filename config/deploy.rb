@@ -70,8 +70,8 @@ end
 
 after "deploy", "restart_bgrb"
 task :restart_bgrb, :roles => [:brb] do
-  run "cd #{latest_release}; RAILS_ENV=production ruby script/backgroundrb stop"
-  run "cd #{latest_release}; RAILS_ENV=production nohup ruby script/backgroundrb start -d >/dev/null 2>&1"
+  run "cd #{latest_release}; RAILS_ENV=production ruby script/backgroundrb stop || true"
+  run "cd #{latest_release}; RAILS_ENV=production nohup ruby script/backgroundrb start >/dev/null 2>&1"
 end
 
 # =============================================================================
