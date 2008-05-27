@@ -62,9 +62,15 @@ task :setup_spool, :roles => [:app, :web], :except  => {:no_release => true, :no
   run "mkdir -p #{shared_path}/spool"
 end
 
-after "deploy:symlink_configs", "symlink_spool"
+after "deploy:symlink_configs", "symlink_audio"
 task :symlink_spool, :roles => [:app, :web], :except => {:no_release => true, :no_symlink => true} do
-  run "ln -s #{shared_path}/spool #{latest_release}/spool"
+  run "ln -s #{shared_path}/audio #{latest_release}/public/audio"
+end
+
+after "deploy", "deploy:restart_bgrb"
+task :restart_bgrb, :roles => [:app, :web], :except => {:no_release => true} do
+  run "ruby #{latest_release}/script/backgroundrb stop"
+  run "ruby #{latest_release}/script/backgroundrb start -e production"
 end
 
 # =============================================================================
