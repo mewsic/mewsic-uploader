@@ -67,7 +67,7 @@ task :symlink_audio, :roles => [:app, :web], :except => {:no_release => true, :n
   run "ln -s #{shared_path}/audio #{latest_release}/public/audio"
 end
 
-after "deploy", "deploy:restart_bgrb"
+after "deploy", "restart_bgrb"
 task :restart_bgrb, :roles => [:app, :web], :except => {:no_release => true} do
   run "ruby #{latest_release}/script/backgroundrb stop"
   run "ruby #{latest_release}/script/backgroundrb start -e production"
