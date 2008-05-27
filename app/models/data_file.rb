@@ -1,4 +1,4 @@
-class DataFile < ActiveRecord::Base
+class DataFile
 
   def self.save(data, name, directory)
     path = File.join(directory, name)

@@ -1,5 +1,6 @@
 :backgroundrb:
-  :ip: 0.0.0.0
+  :ip: 10.2.128.222
+  :environment: production
 
 :development:
   :backgroundrb:

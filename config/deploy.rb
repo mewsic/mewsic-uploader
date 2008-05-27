@@ -11,7 +11,7 @@ require 'eycap/recipes'
 # correspond to. The :deploy_to variable must be the root of the application.
 
 set :keep_releases, 5
-set :application,   'multitrack_server'
+set :application,   'multitrack'
 set :repository,    'https://svn1.hosted-projects.com/medlar/myousica/myousica/multitrack_server'
 set :scm_username,  'ey'
 set :scm_password,  'eSkeWeD214'
@@ -20,10 +20,10 @@ set :password,      'dshUak8s'
 set :deploy_to,     "/data/#{application}"
 set :deploy_via,    :filtered_remote_cache
 set :repository_cache,    "/var/cache/engineyard/#{application}"
-set :monit_group,   'myousica'
+set :monit_group,   'multitrack'
 set :scm,           :subversion
 #
-set :production_database,'myousica_production'
+set :production_database,'multitrack_production'
 set :production_dbhost, 'mysql50-3-master'
 #
 set :dbuser, 'adelaosrl_db'
