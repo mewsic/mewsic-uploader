@@ -70,7 +70,8 @@ end
 
 after "deploy", "restart_bgrb"
 task :restart_bgrb, :roles => [:brb] do
-  run "ruby #{latest_release}/script/backgroundrb -e production restart"
+  run "cd #{latest_release}; ruby script/backgroundrb stop"
+  run "cd #{latest_release}; ruby script/backgroundrb start"
 end
 
 # =============================================================================
