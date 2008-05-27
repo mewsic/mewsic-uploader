@@ -63,7 +63,7 @@ task :setup_spool, :roles => [:app, :web], :except  => {:no_release => true, :no
 end
 
 after "deploy:symlink_configs", "symlink_audio"
-task :symlink_spool, :roles => [:app, :web], :except => {:no_release => true, :no_symlink => true} do
+task :symlink_audio, :roles => [:app, :web], :except => {:no_release => true, :no_symlink => true} do
   run "ln -s #{shared_path}/audio #{latest_release}/public/audio"
 end
 
