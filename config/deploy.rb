@@ -59,16 +59,19 @@ end
 # Any custom after tasks can go here.
 
 after "deploy:setup", "setup_spool"
+desc "create the spool directory"
 task :setup_spool, :roles => [:app, :web], :except  => {:no_release => true, :no_symlink => true} do
   run "mkdir -p #{shared_path}/spool"
 end
 
 after "deploy:symlink_configs", "symlink_audio"
+desc "symlink the audio tank into the public folder"
 task :symlink_audio, :roles => [:app, :web], :except => {:no_release => true, :no_symlink => true} do
   run "ln -s #{shared_path}/audio #{latest_release}/public/audio"
 end
 
-after "deploy", "restart_bgrb"
+before "deploy:restart", "restart_bgrb"
+desc "restart the backgroundrb server"
 task :restart_bgrb, :roles => [:brb] do
   run "cd #{latest_release}; RAILS_ENV=production ruby script/backgroundrb stop || true"
   run "cd #{latest_release}; RAILS_ENV=production nohup ruby script/backgroundrb start >/dev/null 2>&1"
