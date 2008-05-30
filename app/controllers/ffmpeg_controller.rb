@@ -10,10 +10,6 @@ class FfmpegController < ApplicationController
     MiddleMan.new_worker(:worker => :ffmpeg_worker, :job_key => worker_key, :data => worker_args) 
     MiddleMan.worker(:ffmpeg_worker, worker_key).start(filename)
     
-    if worker_info[:status] == 'finished'
-      MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => worker_key)
-    end 
-    
     render :xml => worker_status(worker_key, "idle")
     
   end
@@ -22,6 +18,10 @@ class FfmpegController < ApplicationController
     
     worker_key = params[:worker] || worker
     worker_info = MiddleMan.worker(:ffmpeg_worker, worker_key ).ask_status
+
+    if worker_info[:status] == 'finished'
+      MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => worker_key)
+    end 
     
     render :xml => worker_status(worker_key, worker_info[:status])    
   end
