@@ -56,6 +56,6 @@ MP3_OUTPUT_DIR = "/data/multitrack/shared/audio/"
 
 # attributi NECESSARI per le conversioni etc...
 AR = 44100
-AB = 96
+AB = 128 * 1024
 AC = 2
 OVERWRITE_EXISTING = "-y"
