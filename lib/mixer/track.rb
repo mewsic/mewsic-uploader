@@ -36,7 +36,7 @@ require 'rexml/document'
             @repeat_count = track.elements["repeat_count"].text  unless track.elements["repeat_count"].nil?
             @balance = track.elements["balance"].text  unless track.elements["balance"].nil?       
             @time_shift = track.elements["time_shift"].text  unless track.elements["time_shift"].nil?       
-            @filename = track.elements["filename"].text 
+            @filename = track.elements["filename"].text.sub(/^\/audio/, '')
             @length = track.elements["length"].text  unless track.elements["length"].nil?
             # vabbè un po' zozzo ma per sicurezza controllo ancora
             @state = :error if @filename ==""
