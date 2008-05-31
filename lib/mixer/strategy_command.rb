@@ -14,7 +14,7 @@ module StrategyCommand
         
         output_name = "#{MP3_OUTPUT_DIR}effect_#{t.filename}"
         
-        command = "sox -v #{t.volume} #{MP3_OUTPUT_DIR}#{t.filename}  #{output_name}  pan #{t.balance} pad #{t.time_shift} "
+        command = "sox -v #{t.volume} #{File.join(MP3_OUTPUT_DIR, t.filename)} #{output_name}  pan #{t.balance} pad #{t.time_shift} "
         command << " repeat #{t.repeat_count} " if t.loop == "1"
         
         # uff, non so come chiarmarlo
