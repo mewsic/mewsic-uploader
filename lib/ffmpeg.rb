@@ -32,7 +32,7 @@ module Ffmpeg
         @flv = flv
         @status = 1
         
-        @cmd = self.to_cmd("#{FLV_INPUT_DIR}#{@flv}.flv", "#{MP3_OUTPUT_DIR}#{@flv}.mp3")      
+        @cmd = self.to_cmd("#{FLV_INPUT_DIR}#{@flv}.flv", File.join(MP3_OUTPUT_DIR, "#{@flv}.mp3"))      
         # è inutile parsare l'output...tanto il progress non è in tempo reale
         # con la rescue sappiamo se va in errore e settiamo lo state
         #self.run(cmd)   
