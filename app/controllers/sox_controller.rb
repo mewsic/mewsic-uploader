@@ -21,8 +21,8 @@ class SoxController < ApplicationController
   
   def status(worker = nil)
     worker_key = params[:worker] || worker
-    worker_info = MiddleMan.worker(:sox_worker, worker_key ).ask_status
-    if worker_info[:status] == 'finished'
+    worker_info = MiddleMan.worker(:sox_worker, worker_key ).ask_status || {:status => :error}
+    if worker_info[:status] == :finished
       MiddleMan.delete_worker(:worker => :sox_worker, :job_key => worker_key)
     end 
 
@@ -35,8 +35,7 @@ protected
   def run_sox_worker(commands, user_id)        
     worker_key = "#{user_id.to_s}_#{Time.now.to_i.to_s}"  
     worker_args = {:worker_key => worker_key, :output_name => @output_name}
-    MiddleMan.new_worker(:worker => :sox_worker, :job_key => worker_key, :data => worker_args) 
-    
+    MiddleMan.new_worker(:worker => :sox_worker, :job_key => worker_key, :data => worker_args)
     MiddleMan.worker(:sox_worker, worker_key).start(commands)
     render :xml => worker_status(worker_key, "idle")
   end

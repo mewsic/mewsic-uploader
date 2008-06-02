@@ -26,30 +26,22 @@ class SoxWorker < BackgrounDRb::MetaWorker
     sox_process.run
     
     while sox_process.alive?
-          
      update_status(sox_process.status)
-      
-      sleep @sleep_time
+     sleep @sleep_time
     end
     update_status(sox_process.status)
     
-    
     # finiti tutti i passaggi di encoding 
-    
     # 1. mando un clear storage
     clear
     
     # 2. controllo effettivamente che il file esista
     update_status(:error) unless check_output(arg_commands)
-    
   end
   
 protected
   def update_status(status)
-    progress_info = {:key => @worker_key,     
-        :status => status
-      }
-    register_status(progress_info)
+    register_status(:key => @worker_key, :status => status)
   end
   
   def clear
@@ -58,9 +50,6 @@ protected
   
   def check_output(commands)
     # qui sappiamo che il file che ci interessa è l'ultimo
-    command = commands.last
-    # eseguo il check vero e proprio
-    File.exist(command[:output])
+    File.exists?(commands.last[:output])
   end
 end
-
