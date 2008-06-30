@@ -4,6 +4,7 @@ class UploadController < ApplicationController
   def index
     @output = random_output_file
     FileUtils.ln params[:upload].path, @output, :force => true
+    MiddleMan.worker(:waveform_worker).generate(@output)
     
     respond_to do |format|
       format.xml { render :partial => 'upload', :status => :success }
