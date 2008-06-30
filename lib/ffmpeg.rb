@@ -1,37 +1,33 @@
 class FFmpeg
-  attr_reader :status, :output
+  attr_reader :status
 
-  def initialize(input)
-    @input = File.join(FLV_INPUT_DIR, "#{input}.flv")
-    @output = File.join(MP3_OUTPUT_DIR, "#{MD5.md5(input)}.mp3")
-
+  def initialize(input, output)
+    @input, @output = input, output
     @status = File.exists?(@input) ? :idle : :error
   end
 
   def to_cmd
-    "ffmpeg -i #@input -ar #{AR} -ab #{AB} -ac #{AC} #{OVERWRITE_EXISTING} #@output"
+    "ffmpeg -i #@input -ar #{MP3_FREQ} -ab #{MP3_RATE} -ac #{MP3_CHANNELS} #{MP3_OVERWRITE ? '-y' : ''} #@output"
+  end
+
+  def run
+    return unless @status == :idle
+
+    @status = :running
+    @pid = fork { exec(self.to_cmd) }
   end
 
   def alive?
+    if @pid && Process.wait(@pid, Process::WNOHANG)
+      @pid = nil
+      @status = File.exist?(@output) ? :finished : :error
+    end
+
     @status == :running
   end
 
   def success?
     @status == :finished
-  end
-
-  def output_name
-    File.basename @output
-  end
-
-  def run
-    return unless @status == :idle
-    @status = :running
-
-    Thread.new do
-      system self.to_cmd
-      @status = File.exist?(@output) ? :finished : :error
-    end
   end
 
 end

@@ -58,9 +58,9 @@ end
 
 # Include your application configuration below
 
-AR = 44100
-AB = 128
-AC = 2
-OVERWRITE_EXISTING = "-y"
+MP3_FREQ = 44100
+MP3_RATE = 128
+MP3_CHANNELS = 2
+MP3_OVERWRITE = false
 
 require 'md5'

@@ -1,10 +1,21 @@
 class UploadController < ApplicationController
+  before_filter :check_valid_upload
+
   def index
-    data = params[:Filedata]    
-    name = params[:new_name]
+    @output = random_output_file
+    File.open(@output, 'w+') do |file|
+      file.write params[:upload].read
+    end
     
-    @data_file = DataFile.save(data, name, MP3_OUTPUT_DIR)
-    
-    render :nothing => true
+    respond_to do |format|
+      format.xml { render :partial => 'upload', :status => :success }
+    end
   end
+
+  protected
+    def check_valid_upload
+      unless params[:upload] && params[:upload].respond_to?(:size) && params[:upload].size > 0
+        render :nothing => true, :status => :bad_request
+      end
+    end
 end

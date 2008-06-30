@@ -16,6 +16,7 @@ BackgrounDRb::Config.parse_cmd_options ARGV
 
 require RAILS_HOME + '/config/environment'
 require "rubygems"
+require 'ruby-debug'
 require "yaml"
 require "erb"
 require "logger"

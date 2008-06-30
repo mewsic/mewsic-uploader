@@ -20,8 +20,9 @@ module Adelao
       options_string = options.map { |k,v| " --#{k}=#{v}" }
 
       temp = Tempfile.open('waveform')
-      system "madplay -o wave:#{temp.path} #{input}"
-      system "wav2png --input=#{temp.path} --output=#{output} #{options_string}"
+
+      Process.wait(fork { exec("madplay -o wave:#{temp.path} #{input}") })
+      Process.wait(fork { exec("wav2png --input=#{temp.path} --output=#{output} #{options_string}") })
       temp.close!
     end
   end

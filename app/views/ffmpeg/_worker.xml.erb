@@ -1,4 +1,4 @@
 <worker type="ffmpeg" key="<%= @worker_key %>">
 	<status><%= worker[:status] %></status>
-	<output><%= worker[:output] %></output>
+	<output><%= File.basename(worker[:output]) %></output>
 </worker>
