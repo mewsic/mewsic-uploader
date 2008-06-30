@@ -1,93 +1,34 @@
-module Sox
+require 'executable'
 
-  class SoxCommandList
-    attr_reader :status, :alive
-    alias_method :alive?, :alive
-    
-    def initialize
-      
-      @commands = []
-      @status = :idle
-      @alive = true
-      @sleep_time = 2
-      @output_name = ""
-    end
-    
-    def commands(arg_commands, output_name)
-      @commands = arg_commands
-      @output_name = output_name
-    end
-    
-    def run
-      @status = :running
+class SoxEffect < Executable
 
-      if @commands.nil? || @commands.empty?
-        @status = :error
-        @alive = false
-        return
-      end
-      
-      # qui mando un comando alla volta...
-      @commands.each do |cmd|
-        
-        # creo l'oggetto command vero e proprio
-        current_command = SoxCommand.new
-        current_command.execute(cmd[:command])
-        
-        # anche qui resto sospesa in attesa....
-        while current_command.alive?
-          sleep @sleep_time
-        end
-        
-        # controllo che il comando non sia andato in errore
-        if current_command.status == :error
-          @status = :error
-          @alive = false
-          return
-        end
-      end
+  def initialize(track, output)
+    @track, @output = track, output
+    @status = File.exists?(track.filename) ? :idle : :error
+  end
 
-      puts "FINISHED!"
-      @status = :finished
-      @alive = false
-    end
-     
-  end # end soxCommandList class
-  
-  class SoxCommand
-    
-    attr_reader :status, :alive
-    alias_method :alive?, :alive
-    
-    def initialize
-      @status = :idle
-      @alive = true
-    end
-    
-    
-    def execute(cmd)
-      puts "running #{cmd}"
+  def self.needed?(track)
+    track.volume < 1.0 || track.balance != 0.0
+  end
 
-      Thread.start() do
-        @status = :running
-        begin 
-          IO.popen(cmd) do |pipe|
-            # ok, stiamo andando avanti....
-          end            
+  def to_cmd
+    "sox %s #{@track.filename} #@output %s" % [
+      ("-v #{@track.volume}" if @track.volume < 1.0),
+      ("pan #{@track.balance}" if @track.balance != 0.0)
+    ]
+  end
 
-          @status = :finished
-          @alive = false
+end
 
-          puts "completed #{cmd}"
+class SoxMixer < Executable
 
-        rescue Exception => e
-          @status = :error
-          @alive = false
+  def initialize(tracklist, output)
+    @tracklist, @output = tracklist, output
+    @status = tracklist.all? { |t| File.exists? t.filename } ? :idle : :error
+  end
 
-          puts "error #{cmd}: #{e.inspect}"
-        end
-      end
-    end
+  def to_cmd
+    "sox -m " << @tracklist.join(' ') << ' ' << @output
   end
 
 end
