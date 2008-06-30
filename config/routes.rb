@@ -17,6 +17,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/encode_flv/:filename',      :controller => 'ffmpeg', :action => 'index', :filename => /[\w\d\.]+/
   map.connect '/encode_flv/status/:worker', :controller => 'ffmpeg', :action => 'status', :worker => /[\da-fA-F]{32}/
 
+  map.connect '/mix',                       :controller => 'sox',    :action => 'index'#, :conditions => { :method => :post }
+  map.connect '/mix/status/:worker',        :controller => 'sox',    :action => 'status', :worker => /[\da-fA-F]{32}/
+
   map.connect '/upload',                    :controller => 'upload', :action => 'index', :conditions => { :method => :post }
 
   # Allow downloading Web Service WSDL as a file with an extension
