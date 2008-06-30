@@ -1,5 +1,5 @@
 :backgroundrb:
-  :environment: development
+  :environment: production
 
 :development:
   :backgroundrb:

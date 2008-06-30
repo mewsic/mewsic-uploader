@@ -2,10 +2,6 @@ require 'tracklist'
 
 class SoxController < ApplicationController
   def index
-    if request.get?
-      render and return
-    end
-
     @worker_key = random_md5
 
     tracklist = Tracklist.new(params[:song])
