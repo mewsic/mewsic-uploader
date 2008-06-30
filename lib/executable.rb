@@ -14,7 +14,7 @@ class Executable
   def running?
     if @pid && Process.wait(@pid, Process::WNOHANG)
       @pid = nil
-      @status = File.exist?(@output) ? :finished : :error
+      @status = File.exists?(@output) ? :finished : :error
     end
 
     @status == :running

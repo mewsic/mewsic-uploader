@@ -12,7 +12,7 @@ class SoxEffect < Executable
   end
 
   def to_cmd
-    "sox %s #{@track.filename} #@output %s" % [
+    "sox %s -t mp3 #{@track.filename} -t mp3 #@output %s" % [
       ("-v #{@track.volume}" if @track.volume < 1.0),
       ("pan #{@track.balance}" if @track.balance != 0.0)
     ]
@@ -24,11 +24,11 @@ class SoxMixer < Executable
 
   def initialize(tracklist, output)
     @tracklist, @output = tracklist, output
-    @status = tracklist.all? { |t| File.exists? t.filename } ? :idle : :error
+    @status = tracklist.all? { |file| File.exists? file } ? :idle : :error
   end
 
   def to_cmd
-    "sox -m " << @tracklist.join(' ') << ' ' << @output
+    "sox -m " << (@tracklist + [@output]).map { |file| "-t mp3 #{file}" }.join(' ')
   end
 
 end

@@ -19,10 +19,11 @@ module Adelao
       options.assert_valid_keys :linecolor, :backgroundcolor, :zerocolor, :type, :padding, :width, :height, :verbose
       options_string = options.map { |k,v| " --#{k}=#{v}" }
 
-      temp = Tempfile.open('waveform')
+      temp = Tempfile.new 'waveform'
 
       Process.wait(fork { exec("madplay -o wave:#{temp.path} #{input}") })
       Process.wait(fork { exec("wav2png --input=#{temp.path} --output=#{output} #{options_string}") })
+
       temp.close!
     end
   end

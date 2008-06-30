@@ -18,9 +18,8 @@ class SoxWorker < BackgrounDRb::MetaWorker
   def run
     files = []
     @tracklist.each do |track|
-      debugger
       if SoxEffect.needed?(track)
-        tempfile = Tempfile.open('effect')
+        tempfile = Tempfile.new 'effect'
 
         effect = SoxEffect.new(track, tempfile.path).run
         while effect.running?
@@ -44,12 +43,16 @@ class SoxWorker < BackgrounDRb::MetaWorker
 
     raise SoxError, "error while mixing to #@output" unless mixer.success?
 
+    Adelao::Waveform.generate(@output)
+
+    update_status(:finished)
+
   rescue SoxError
     puts "exception: #{$!}"
     update_status(:error)
 
   ensure
-    files.each { |f| f.respond_to? :close! ? f.close! : f.close }
+    files.each { |f| f.is_a?(Tempfile) ? f.close! : f.close }
   end
   
   protected
