@@ -1,35 +1,30 @@
 class FfmpegController < ApplicationController
-  
-  def flv_to_mp3
-    
-    filename = params[:filename]
-    worker_key = "#{filename}_#{Time.now.to_i.to_s}"  
+  def index
+    @worker_key = MD5.md5(rand.to_s).to_s
 
-    worker_args = {:worker_key => worker_key}
+    MiddleMan.new_worker(:worker => :ffmpeg_worker, :job_key => @worker_key, :data => {:worker_key => @worker_key}) 
+    MiddleMan.worker(:ffmpeg_worker, @worker_key).run(params[:filename])
     
-    MiddleMan.new_worker(:worker => :ffmpeg_worker, :job_key => worker_key, :data => worker_args) 
-    MiddleMan.worker(:ffmpeg_worker, worker_key).start(filename)
-    
-    render :xml => worker_status(worker_key, "idle")
-    
+    respond_to do |format|
+      format.xml { render :partial => 'worker', :object => worker }
+    end
   end
 
-  def status(worker = nil)
-    
-    worker_key = params[:worker] || worker
-    worker_info = MiddleMan.worker(:ffmpeg_worker, worker_key ).ask_status
+  def status
+    @worker_key = params[:worker]
 
-    if worker_info[:status] == 'finished'
-      MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => worker_key)
+    if worker[:status] == :finished
+      MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => @worker_key)
     end 
     
-    render :xml => worker_status(worker_key, worker_info[:status])    
+    respond_to do |format|
+      format.xml { render :partial => 'worker', :object => worker }
+    end
   end
 
-protected
-  def worker_status(worker_key, w_status= nil)
-    status_worker = w_status || status(worker_key) 
-    return "<response><worker>#{worker_key}</worker><worker_status>#{status_worker}</worker_status></response>"
-  end
-  
+  private
+    def worker
+      @worker ||= MiddleMan.worker(:ffmpeg_worker, @worker_key).ask_status || {:status => :idle}
+    end
+
 end

@@ -1,52 +1,33 @@
-require "#{RAILS_ROOT}/lib/ffmpeg"
-require "#{RAILS_ROOT}/lib/clear"
-class FfmpegWorker < BackgrounDRb::MetaWorker
+require 'ffmpeg'
+require 'waveform'
 
-  include Ffmpeg
+class FfmpegWorker < BackgrounDRb::MetaWorker
   set_worker_name :ffmpeg_worker
+  set_no_auto_load true
   
   def create(args = nil)
-    
-    @verbalized_status = ["idle", "running", "error", "finished"]
-    if args
-      @worker_key = args[:key]
-    end    
-    
-    @sleep_time = 2
+    @worker_key = args[:key] if args
   end
   
-  def start(filename)
-    # avvio il tutto
-    ffmpeg_process = Ffmpeg.new
-    ffmpeg_process.flv_to_mp3(filename)
-    
-    update_status(ffmpeg_process.status)
-    ffmpeg_process.run
+  def run(filename)
+    @ffmpeg = FFmpeg.new(filename)
+    @ffmpeg.run
 
-    while ffmpeg_process.alive?
-      
-     update_status(ffmpeg_process.status)
-      
-      sleep @sleep_time
+    update_status
+
+    sleep(2) while @ffmpeg.alive?
+
+    if @ffmpeg.success?
+      Adelao::Waveform.generate(@ffmpeg.output)
     end
-    
-    update_status(ffmpeg_process.status)
-   
-    clear(filename)
+
+    update_status
   end
   
 protected
-  def update_status(status)
-    progress_info = {:key => @worker_key,     
-        :status => @verbalized_status[status]
-      }
-    register_status(progress_info)
-    
-  end
-  def clear(filename)
-    Clear.all(FLV_INPUT_DIR, "#{filename}.flv")
+
+  def update_status
+    register_status :key => @worker_key, :status => @ffmpeg.status, :output => @ffmpeg.output_name
   end
 
-    
 end
-

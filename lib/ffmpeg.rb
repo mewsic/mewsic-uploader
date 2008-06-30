@@ -1,79 +1,37 @@
-module Ffmpeg
-  
-#  require "open3"
-  
-  class Ffmpeg  
-    attr_accessor :status, :progress, :line
-    
-    def initialize()
+class FFmpeg
+  attr_reader :status, :output
 
-      ### vabbe maniere forti:
-#      state
-#      0 = "idle"
-#      1 = "running"
-#      2 = "error"
-#      3 = "finished"
-      
-      @status = 0
-      @alive = true
-      @flv = ""
-      # parametri definiti nell'environment'
-      @ar = AR
-      @ab = AB
-      @ac = AC
-      @overwrite = OVERWRITE_EXISTING    
-      
-      @cmd = ""
-      
-    end
-    
-  
-    def flv_to_mp3(flv)
-        @flv = flv
-        @status = 1
-        
-        @cmd = self.to_cmd("#{FLV_INPUT_DIR}#{@flv}.flv", File.join(MP3_OUTPUT_DIR, "#{@flv}.mp3"))      
-        # è inutile parsare l'output...tanto il progress non è in tempo reale
-        # con la rescue sappiamo se va in errore e settiamo lo state
-        #self.run(cmd)   
-    end
-    
-    def alive?
-      @alive
-    end
-    
+  def initialize(input)
+    @input = File.join(FLV_INPUT_DIR, "#{input}.flv")
+    @output = File.join(MP3_OUTPUT_DIR, "#{MD5.md5(input)}.mp3")
 
-    
-    def run
-      Thread.start() do
-        begin 
-          IO.popen(@cmd) do |pipe|
-            # ok, stiamo andando avanti....
-          end            
-        
-        
-        @status = 3
-
-        checkFile
-        
-        
-        rescue => e
-          @status = 2   
-          @alive = false
-          
-        end
-
-      end
-    end
-protected    
-    def checkFile
-      @alive = false
-      @status = 2 unless File.exist?("#{MP3_OUTPUT_DIR}#{@flv}.mp3")
-    end
-    
-    def to_cmd(input_name, output_name)
-      return "ffmpeg -i #{input_name} -ar #{@ar} -ab #{@ab} -ac #{@ac} #{@overwrite} #{output_name}"
-    end
-  
+    @status = File.exists?(@input) ? :idle : :error
   end
+
+  def to_cmd
+    "ffmpeg -i #@input -ar #{AR} -ab #{AB} -ac #{AC} #{OVERWRITE_EXISTING} #@output"
+  end
+
+  def alive?
+    @status == :running
+  end
+
+  def success?
+    @status == :finished
+  end
+
+  def output_name
+    File.basename @output
+  end
+
+  def run
+    return unless @status == :idle
+    @status = :running
+
+    Thread.new do
+      system self.to_cmd
+      @status = File.exist?(@output) ? :finished : :error
+    end
+  end
+
 end
