@@ -14,9 +14,12 @@ ActionController::Routing::Routes.draw do |map|
   # map.connect '', :controller => "welcome"
   map.connect '', :controller => "main"
 
+  map.connect '/encode_flv/:filename', :controller => 'ffmpeg', :action => 'index', :filename => /[\w\d\.]+/
+  map.connect '/encode_flv/status/:worker', :controller => 'ffmpeg', :action => 'status', :worker => /[\w\d]+/
+
   # Allow downloading Web Service WSDL as a file with an extension
   # instead of a file named 'wsdl'
-  map.connect ':controller/service.wsdl', :action => 'wsdl'
+  #map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   map.connect ':controller', :action => 'index'
 

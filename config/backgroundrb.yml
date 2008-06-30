@@ -1,6 +1,5 @@
 :backgroundrb:
-  :ip: 10.2.128.222
-  :environment: production
+  :environment: development
 
 :development:
   :backgroundrb:
@@ -9,6 +8,7 @@
 
 :production:
   :backgroundrb:
+    :ip: 10.2.128.222
     :port: 22222      # use port 22222
     :lazy_load: true  # do not load models eagerly
     :debug_log: false # disable log workers and other logging   
