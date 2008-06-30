@@ -1,55 +1,60 @@
-require "#{RAILS_ROOT}/lib/sox"
-require "#{RAILS_ROOT}/lib/clear"
+require 'tracklist'
+require 'sox'
+
+class SoxError < StandardError
+end
 
 class SoxWorker < BackgrounDRb::MetaWorker
-  include Sox
-  
   set_worker_name :sox_worker
-  def create(args = nil)
-    
-    if args
-      @worker_key = args[:key]
-      @output_name = args[:output_name]
-    end    
-    
-    @sleep_time = 2
+  set_no_auto_load true
+
+  def create(args)
+    @tracklist = args[:tracks]
+    @output = args[:output]
+
+    update_status(:idle)
   end
-  
-  
-  def start(arg_commands)
-        
-    # avvio il tutto il commandlist esegue un comando alla volta
-    sox_process = SoxCommandList.new
-    sox_process.commands(arg_commands, @output_name)
-    
-    update_status(sox_process.status)
-    sox_process.run
-    
-    while sox_process.alive?
-     update_status(sox_process.status)
-     sleep @sleep_time
+
+  def run
+    files = []
+    @tracklist.each do |track|
+      debugger
+      if SoxEffect.needed?(track)
+        tempfile = Tempfile.open('effect')
+
+        effect = SoxEffect.new(track, tempfile.path).run
+        while effect.running?
+          update_status(:running)
+          sleep 1
+        end
+
+        raise SoxError, "error while processing #{track.filename}" unless effect.success?
+
+        files << tempfile
+      else
+        files << File.open(track.filename, 'r')
+      end
     end
-    update_status(sox_process.status)
-    
-    # finiti tutti i passaggi di encoding 
-    # 1. mando un clear storage
-    clear
-    
-    # 2. controllo effettivamente che il file esista
-    update_status(:error) unless check_output(arg_commands)
+
+    mixer = SoxMixer.new(files.map(&:path), @output).run
+    while mixer.running?
+      update_status(:running)
+      sleep 1
+    end
+
+    raise SoxError, "error while mixing to #@output" unless mixer.success?
+
+  rescue SoxError
+    puts "exception: #{$!}"
+    update_status(:error)
+
+  ensure
+    files.each { |f| f.respond_to? :close! ? f.close! : f.close }
   end
   
-protected
-  def update_status(status)
-    register_status(:key => @worker_key, :status => status)
-  end
-  
-  def clear
-    Clear.all(MP3_OUTPUT_DIR, "effect")
-  end
-  
-  def check_output(commands)
-    # qui sappiamo che il file che ci interessa è l'ultimo
-    File.exists?(commands.last[:output])
-  end
+  protected
+    def update_status(status)
+      register_status(:status => status, :output => @output)
+    end
+
 end

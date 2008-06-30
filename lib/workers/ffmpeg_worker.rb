@@ -17,7 +17,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
   def run
     @processor.run
 
-    while @processor.alive?
+    while @processor.running?
       update_status
       sleep 1
     end
