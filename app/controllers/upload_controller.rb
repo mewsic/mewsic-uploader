@@ -3,9 +3,7 @@ class UploadController < ApplicationController
 
   def index
     @output = random_output_file
-    File.open(@output, 'w+') do |file|
-      file.write params[:upload].read
-    end
+    FileUtils.ln params[:upload].path, @output, :force => true
     
     respond_to do |format|
       format.xml { render :partial => 'upload', :status => :success }
@@ -14,8 +12,9 @@ class UploadController < ApplicationController
 
   protected
     def check_valid_upload
-      unless params[:upload] && params[:upload].respond_to?(:size) && params[:upload].size > 0
-        render :nothing => true, :status => :bad_request
+      upload = params[:upload]
+      unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /audio\/mpeg/
+        render :text => upload.content_type, :status => :bad_request
       end
     end
 end

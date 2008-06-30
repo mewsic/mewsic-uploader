@@ -1,0 +1,11 @@
+<html>
+	<head>
+		<title>upload</title>
+	</head>
+	<body>
+		<% form_tag('/upload', :multipart => true) do %>
+			<%= file_field_tag 'upload' %>
+			<%= submit_tag 'go' %>
+		<% end %>
+	</body>
+</html>

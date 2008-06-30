@@ -64,3 +64,4 @@ MP3_CHANNELS = 2
 MP3_OVERWRITE = false
 
 require 'md5'
+require 'fileutils'
