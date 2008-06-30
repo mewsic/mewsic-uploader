@@ -1,48 +1,41 @@
-$: << "mixer/"
-require "mixer/tracklist"
-require "mixer/track"
+require 'tracklist'
 
 class SoxController < ApplicationController
-
-  
-  def export_song
-    user_id = params[:user]
-    output_name = "#{params[:user]}_#{Time.now.to_i.to_s}"
-    tracklist = Tracklist.new(params[:song], output_name)
-    
-    # aspetto che la tracklist finisca...
-    while tracklist.running?
-      sleep 1
+  def index
+    if request.get?
+      render and return
     end
-    
-    # ho i comandi, faccio partire il worker
-    run_sox_worker(tracklist.commands, user_id)        
+
+    @worker_key = random_md5
+
+    tracklist = Tracklist.new(params[:song])
+    output = random_output_file
+
+    MiddleMan.new_worker :worker => :sox_worker, :job_key => @worker_key,
+                         :data => {:tracks => tracklist, :output => output}
+
+    MiddleMan.worker(:sox_worker, @worker_key).run
+
+    render_worker_status
+
+  rescue TracklistError
+    render :text => $!.to_s, :status => :bad_request
   end
   
   def status(worker = nil)
-    worker_key = params[:worker] || worker
-    worker_info = MiddleMan.worker(:sox_worker, worker_key ).ask_status || {:status => :error}
-    if worker_info[:status] == :finished
-      MiddleMan.delete_worker(:worker => :sox_worker, :job_key => worker_key)
+    @worker_key = params[:worker]
+
+    if [:finished, :error].include? worker_status[:status]
+      MiddleMan.delete_worker(:worker => :sox_worker, :job_key => @worker_key)
     end 
 
-    render :xml => worker_status(worker_key, worker_info[:status])    
+    render_worker_status
   end
 
-  
-  
-protected
-  def run_sox_worker(commands, user_id)        
-    worker_key = "#{user_id.to_s}_#{Time.now.to_i.to_s}"  
-    worker_args = {:worker_key => worker_key, :output_name => @output_name}
-    MiddleMan.new_worker(:worker => :sox_worker, :job_key => worker_key, :data => worker_args)
-    MiddleMan.worker(:sox_worker, worker_key).start(commands)
-    render :xml => worker_status(worker_key, "idle")
-  end
-  
-  def worker_status(worker_key, w_status= nil)
-    status_worker = w_status || status(worker_key) 
-    return "<response><worker>#{worker_key}</worker><worker_status>#{status_worker}</worker_status></response>"
-  end
+  private
+
+    def worker_status
+      MiddleMan.worker(:sox_worker, @worker_key).ask_status || Hash.new('')
+    end
 
 end

@@ -4,7 +4,7 @@ class FfmpegController < ApplicationController
     input = input_file(params[:filename] + '.flv')
 
     unless File.exists? input
-      render :nothing => true, :status => :bad_request and return
+      render :text => 'file not found', :status => :bad_request and return
     end
 
     MiddleMan.new_worker :worker => :ffmpeg_worker, :job_key => @worker_key,
@@ -12,24 +12,21 @@ class FfmpegController < ApplicationController
 
     MiddleMan.worker(:ffmpeg_worker, @worker_key).run
     
-    respond_to do |format|
-      format.xml { render :partial => 'worker', :object => worker_status }
-    end
+    render_worker_status
   end
 
   def status
     @worker_key = params[:worker]
 
-    if worker_status[:status] == :finished
+    if [:finished, :error].include? worker_status[:status]
       MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => @worker_key)
     end 
-    
-    respond_to do |format|
-      format.xml { render :partial => 'worker', :object => worker_status }
-    end
+
+    render_worker_status
   end
 
   private
+
     def worker_status
       MiddleMan.worker(:ffmpeg_worker, @worker_key).ask_status || Hash.new('')
     end

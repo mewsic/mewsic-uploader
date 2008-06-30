@@ -19,4 +19,10 @@ class ApplicationController < ActionController::Base
   def random_md5
     MD5.md5(rand.to_s).to_s
   end
+
+  def render_worker_status
+    respond_to do |format|
+      format.xml { render :partial => 'shared/worker', :object => worker_status }
+    end
+  end
 end
