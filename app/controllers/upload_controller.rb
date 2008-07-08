@@ -4,6 +4,7 @@ class UploadController < ApplicationController
   def index
     @output = random_output_file
     FileUtils.ln params[:upload].path, @output, :force => true
+    @mp3info = Mp3Info.open @output
     MiddleMan.worker(:waveform_worker).generate(@output)
     
     respond_to do |format|
@@ -14,8 +15,8 @@ class UploadController < ApplicationController
   protected
     def check_valid_upload
       upload = params[:upload]
-      unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /audio\/mpeg/
-        render :text => upload.content_type, :status => :bad_request
+      unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /^audio\/mpeg$/
+        render :text => 'invalid upload', :status => :bad_request
       end
     end
 end
