@@ -3,7 +3,7 @@ class UploadController < ApplicationController
 
   def index
     @output = random_output_file
-    FileUtils.cp params[:upload].path, @output, :force => true
+    FileUtils.cp params[:upload].path, @output
     @mp3info = Mp3Info.open @output
     MiddleMan.worker(:waveform_worker).generate(@output)
     
