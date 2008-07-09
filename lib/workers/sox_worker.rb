@@ -11,6 +11,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
   def create(args)
     @tracklist = args[:tracks]
     @output = args[:output]
+    @length = 0
 
     update_status(:idle)
   end
@@ -43,6 +44,8 @@ class SoxWorker < BackgrounDRb::MetaWorker
 
     raise SoxError, "error while mixing to #@output" unless mixer.success?
 
+    @length = Mp3Info.open(@output).length.ceil rescue 0
+
     Adelao::Waveform.generate(@output)
 
     update_status(:finished)
@@ -57,7 +60,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
   
   protected
     def update_status(status)
-      register_status(:status => status, :output => @output)
+      register_status(:status => status, :output => @output, :length => @length)
     end
 
 end

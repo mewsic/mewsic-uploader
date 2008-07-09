@@ -8,6 +8,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
   def create(options)
     @input = options[:input]
     @output = options[:output]
+    @length = 0
 
     @processor = FFmpeg.new(@input, @output)
 
@@ -22,6 +23,8 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
       sleep 1
     end
 
+    @length = Mp3Info.open(@output).length.ceil rescue 0
+
     if @processor.success?
       Adelao::Waveform.generate(@output)
     end
@@ -32,7 +35,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
 protected
 
   def update_status
-    register_status :status => @processor.status, :output => @output
+    register_status :status => @processor.status, :output => @output, :length => @length
   end
 
 end

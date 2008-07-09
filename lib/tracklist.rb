@@ -27,7 +27,7 @@ class Track
     @attributes = attributes
     @attributes.assert_valid_keys *Attributes
 
-    unless Attributes.all? { |attr| @attributes.has_key? attr }
+    unless Attributes.all? { |attr| @attributes.has_key?(attr) && !@attributes[attr].blank? }
       raise TracklistError, 'incomplete track'
     end
 

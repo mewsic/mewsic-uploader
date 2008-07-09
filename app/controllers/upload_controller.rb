@@ -8,7 +8,7 @@ class UploadController < ApplicationController
     MiddleMan.worker(:waveform_worker).generate(@output)
     
     respond_to do |format|
-      format.xml { render :partial => 'upload', :status => :success }
+      format.xml { render :partial => 'upload', :status => 200 }
     end
   end
 
@@ -16,7 +16,7 @@ class UploadController < ApplicationController
     def check_valid_upload
       upload = params[:upload]
       unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /^audio\/mpeg$/
-        render :text => 'invalid upload', :status => :bad_request
+        render :text => 'invalid upload', :status => 400
       end
     end
 end
