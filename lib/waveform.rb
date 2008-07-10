@@ -11,12 +11,15 @@ module Adelao
       :width => 800,
       :height => 50
     }
+    FlashMaxWidth = 2879
 
     def self.generate(input, options = {})
       output = options.delete(:output) || input.sub(/\.mp3$/, '.png')
       options = DefaultOptions.merge(options)
 
       options.assert_valid_keys :linecolor, :backgroundcolor, :zerocolor, :type, :padding, :width, :height, :verbose
+
+      options[:width] = FlashMaxWidth if options[:width] > FlashMaxWidth # XXX flash hack
       options_string = options.map { |k,v| " --#{k}=#{v}" }
 
       temp = Tempfile.new 'waveform'

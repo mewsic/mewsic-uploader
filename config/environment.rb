@@ -59,7 +59,9 @@ end
 # Include your application configuration below
 
 MP3_FREQ = 44100
-MP3_RATE = 128
+MP3_VBR = true
+MP3_RATE = 128  # quality setting for CBR. bare bitrate.
+MP3_QUALITY = 5 # quality setting for VBR. default n=4.  0=high quality,bigger files. 9=smaller files
 MP3_CHANNELS = 2
 MP3_OVERWRITE = false
 

@@ -7,6 +7,10 @@ class FFmpeg < Executable
   end
 
   def to_cmd
-    "ffmpeg -i #@input -ar #{MP3_FREQ} -ab #{MP3_RATE} -ac #{MP3_CHANNELS} #{MP3_OVERWRITE ? '-y' : ''} #@output"
+    quality = "-ab #{MP3_RATE}"
+    quality << " -aq #{MP3_QUALITY}" if MP3_VBR
+    overwrite = MP3_OVERWRITE ? '-y' : ''
+
+    "ffmpeg -i #@input -ar #{MP3_FREQ} -ac #{MP3_CHANNELS} #{quality} #{overwrite} #@output"
   end
 end

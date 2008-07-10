@@ -25,4 +25,10 @@ class ApplicationController < ActionController::Base
       format.xml { render :partial => 'shared/worker', :object => worker_status }
     end
   end
+
+  def delete_worker_if_finished(worker, key)
+    if [:finished, :error].include? worker_status[:status]
+      MiddleMan.delete_worker(:worker => worker, :job_key => key)
+    end 
+  end
 end

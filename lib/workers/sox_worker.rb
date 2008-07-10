@@ -46,7 +46,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
 
     @length = Mp3Info.open(@output).length.ceil rescue 0
 
-    Adelao::Waveform.generate(@output)
+    Adelao::Waveform.generate(@output, :width => @length * 10)
 
     update_status(:finished)
 

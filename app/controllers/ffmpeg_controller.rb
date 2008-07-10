@@ -18,10 +18,7 @@ class FfmpegController < ApplicationController
   def status
     @worker_key = params[:worker]
 
-    if [:finished, :error].include? worker_status[:status]
-      MiddleMan.delete_worker(:worker => :ffmpeg_worker, :job_key => @worker_key)
-    end 
-
+    delete_worker_if_finished :ffmpeg_worker, @worker_key
     render_worker_status
   end
 
