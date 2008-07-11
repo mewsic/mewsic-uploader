@@ -1,8 +1,5 @@
 <upload>
 	<name><%= File.basename @output %></name>
-	<length><%= @mp3info.length.ceil %></length>
+	<length><%= @mp3info.length %></length>
 	<bitrate><%= @mp3info.bitrate %></bitrate>
-	<samplerate><%= @mp3info.samplerate %></samplerate>
-	<mpeg_version><%= @mp3info.mpeg_version %></mpeg_version>
-	<layer><%= @mp3info.layer %></layer>
 </upload>

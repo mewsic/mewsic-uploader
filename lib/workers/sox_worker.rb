@@ -44,7 +44,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
 
     raise SoxError, "error while mixing to #@output" unless mixer.success?
 
-    @length = Mp3Info.open(@output).length.ceil rescue 0
+    @length = Mp3Info.new(@output).length rescue 0
 
     Adelao::Waveform.generate(@output, :width => @length * 10)
 

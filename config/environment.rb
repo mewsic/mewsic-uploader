@@ -67,4 +67,4 @@ MP3_OVERWRITE = false
 
 require 'md5'
 require 'fileutils'
-require 'mp3info'
+require 'mp3info-cli'

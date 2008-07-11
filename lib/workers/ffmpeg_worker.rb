@@ -23,7 +23,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
       sleep 1
     end
 
-    @length = Mp3Info.open(@output).length.ceil rescue 0
+    @length = Mp3Info.new(@output).length rescue 0
 
     if @processor.success?
       Adelao::Waveform.generate(@output, :width => @length * 10)
