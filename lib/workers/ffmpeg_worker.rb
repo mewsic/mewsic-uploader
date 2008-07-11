@@ -29,7 +29,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
       Adelao::Waveform.generate(@output, :width => @length * 10)
     end
 
-    File.unlink options[:input]
+    File.unlink @input
 
     update_status
   end
