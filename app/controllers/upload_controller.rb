@@ -8,7 +8,7 @@ class UploadController < ApplicationController
     # upload file? better safe than sorry for now.
     #
     # -vjt
-    input = input_file(random_md5)
+    input = input_file(random_md5) << '.mp3'
     FileUtils.cp params[:upload].path, input
 
     MiddleMan.new_worker :worker => :ffmpeg_worker, :job_key => @worker_key,
