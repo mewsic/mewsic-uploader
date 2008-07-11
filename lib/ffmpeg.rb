@@ -7,7 +7,7 @@ class FFmpeg < Executable
   end
 
   def to_cmd
-    quality = "-ab #{MP3_RATE}"
+    quality = "-ab #{MP3_RATE * 1024}"
     quality << " -aq #{MP3_QUALITY}" if MP3_VBR
     overwrite = MP3_OVERWRITE ? '-y' : ''
 
