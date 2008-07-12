@@ -3,7 +3,8 @@
 
 :development:
   :backgroundrb:
-    :port: 11111     # use port 
+    :ip: 127.0.0.1   # bind to localhost
+    :port: 11111     # use port 11111
     :log: foreground # foreground mode,print log messages on console
 
 :production:

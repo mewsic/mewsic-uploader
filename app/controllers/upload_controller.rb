@@ -11,18 +11,18 @@ class UploadController < ApplicationController
     input = input_file(random_md5) << '.mp3'
     FileUtils.cp params[:upload].path, input
 
-    MiddleMan.new_worker :worker => :ffmpeg_worker, :job_key => @worker_key,
-                         :data => {:input => input, :output => random_output_file}
-
-    MiddleMan.worker(:ffmpeg_worker, @worker_key).run
+    MiddleMan.ask_work :worker => :ffmpeg_worker, :worker_method => :run,
+                       :data => {
+                         :key => @worker_key,
+                         :input => input,
+                         :output => random_output_file
+                       }
 
     render_worker_status
   end
 
   def status
     @worker_key = params[:worker]
-
-    delete_worker_if_finished :ffmpeg_worker, @worker_key
     render_worker_status
   end
 
@@ -37,7 +37,7 @@ class UploadController < ApplicationController
   private
 
     def worker_status
-      MiddleMan.worker(:ffmpeg_worker, @worker_key).ask_status || Hash.new('')
+      MiddleMan.worker(:ffmpeg_worker).ask_status[@worker_key] || Hash.new('')
     end
 
 end

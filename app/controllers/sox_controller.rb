@@ -4,13 +4,12 @@ class SoxController < ApplicationController
   def index
     @worker_key = random_md5
 
-    MiddleMan.new_worker :worker => :sox_worker, :job_key => @worker_key,
-                         :data => {
-                           :tracks => Tracklist.new(params[:song]),
-                           :output => random_output_file
-                         }
-
-    MiddleMan.worker(:sox_worker, @worker_key).run
+    MiddleMan.ask_work :worker => :sox_worker, :worker_method => :run,
+                       :data => {
+                          :key => @worker_key,
+                          :tracks => Tracklist.new(params[:song]),
+                          :output => random_output_file
+                       }
 
     render_worker_status
 
@@ -20,15 +19,12 @@ class SoxController < ApplicationController
   
   def status(worker = nil)
     @worker_key = params[:worker]
-
-    delete_worker_if_finished :sox_worker, @worker_key
     render_worker_status
   end
 
   private
-
     def worker_status
-      MiddleMan.worker(:sox_worker, @worker_key).ask_status || Hash.new('')
+      MiddleMan.worker(:sox_worker).ask_status[@worker_key] || Hash.new('')
     end
 
 end

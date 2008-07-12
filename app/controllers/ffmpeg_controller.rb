@@ -7,25 +7,24 @@ class FfmpegController < ApplicationController
       render :text => 'file not found', :status => :bad_request and return
     end
 
-    MiddleMan.new_worker :worker => :ffmpeg_worker, :job_key => @worker_key,
-                         :data => {:input => input, :output => random_output_file}
+    MiddleMan.ask_work :worker => :ffmpeg_worker, :worker_method => :run,
+                       :data => {
+                         :key => @worker_key,
+                         :input => input,
+                         :output => random_output_file
+                       }
 
-    MiddleMan.worker(:ffmpeg_worker, @worker_key).run
-    
     render_worker_status
   end
 
   def status
     @worker_key = params[:worker]
-
-    delete_worker_if_finished :ffmpeg_worker, @worker_key
     render_worker_status
   end
 
   private
-
     def worker_status
-      MiddleMan.worker(:ffmpeg_worker, @worker_key).ask_status || Hash.new('')
+      MiddleMan.worker(:ffmpeg_worker).ask_status[@worker_key] || Hash.new('')
     end
 
 end
