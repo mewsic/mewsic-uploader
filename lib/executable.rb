@@ -24,4 +24,3 @@ class Executable
     @status == :finished
   end
 end
-

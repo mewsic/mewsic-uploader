@@ -1,6 +1,9 @@
 require 'ffmpeg'
 require 'waveform'
 
+class EncodingError < StandardError
+end
+
 class FfmpegWorker < BackgrounDRb::MetaWorker
   set_worker_name :ffmpeg_worker
   pool_size 3
@@ -15,35 +18,52 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
 
   def run(options)
     thread_pool.defer(options) do |options|
-      # Initialization
-      key = options[:key]
-      input = options[:input]
-      output = options[:output]
-      length = 0
+      begin
+        # Initialization
+        key = options[:key]
+        input = options[:input]
+        output = options[:output]
+        length = 0
 
-      update_status key, :idle, output, length
+        update_status key, :running, output, length
 
-      processor = FFmpeg.new(input, output)
+        # Analysis
+        process = SoxAnalyzer.new(input).run
+        sleep(1) while process.running?
+        raise EncodingError unless process.success?
 
-      # Encoding
-      update_status key, :running, output, length
-      processor.run
+        # Normalization
+        if process.optimum_volume != 1.0
+          tempfile = Tempfile.new 'normalizer'
 
-      while processor.running?
-        update_status key, processor.status, output, length
-        sleep 1
-      end
+          process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume).run
+          sleep(1) while process.running?
+          raise EncodingError unless process.success?
 
-      length = Mp3Info.new(output).length rescue 0
+          File.unlink(input)
+          input = tempfile.path
+        end
 
-      # Waveform
-      if processor.success?
+        # Encoding
+        process = FFmpeg.new(input, output).run
+        sleep(1) while process.running?
+        raise EncodingError unless process.success?
+
+        # Waveform
+        length = Mp3Info.new(output).length rescue 0 # XXX
         Adelao::Waveform.generate(output, :width => length * 10)
-      end
-      File.unlink input
 
-      # Finished
-      update_status key, processor.status, output, length
+        # Finished
+        update_status key, :finished, output, length
+
+      rescue EncodingError
+        update_status key, :error, output, length
+
+      ensure
+        # Cleanup
+        File.unlink input
+        GC.start
+      end
     end
   end
   
@@ -51,7 +71,7 @@ protected
 
   def update_status(key, status, output, length)
     @status_mutex.synchronize do
-      @worker_status[key] = {:status => status, :output => output, :length => length}
+      @worker_status[key] = {:status => status, :output => output, :length => length, :ts => Time.now}
     end
     register_status @worker_status
   end

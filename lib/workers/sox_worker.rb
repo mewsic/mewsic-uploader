@@ -24,38 +24,36 @@ class SoxWorker < BackgrounDRb::MetaWorker
         output = options[:output]
         tracklist = options[:tracks]
         length = 0
-        files = []
 
-        update_status key, :idle, output, length
+        update_status key, :running, output, length
 
+        # Apply effects
+        tracks = []
         tracklist.each do |track|
           if SoxEffect.needed?(track)
-            tempfile = Tempfile.new 'effect'
+            # If an effect is requested, execute it
+            file = Tempfile.new 'effect'
 
-            effect = SoxEffect.new(track, tempfile.path).run
-            while effect.running?
-              update_status key, :running, output, length
-              sleep 1
-            end
+            process = SoxEffect.new(track, file.path).run
+            sleep(1) while process.running?
+            raise SoxError, "error while processing #{track.filename}" unless process.success?
 
-            raise SoxError, "error while processing #{track.filename}" unless effect.success?
-
-            files << tempfile
+            tracks << SoxMixer::Track.new(file, 'wav')
           else
-            files << File.open(track.filename, 'r')
+            # Else, use the original file
+            file = File.open track.filename, 'r'
+
+            tracks << SoxMixer::Track.new(file, 'mp3')
           end
         end
 
-        mixer = SoxMixer.new(files.map(&:path), output).run
-        while mixer.running?
-          update_status key, :running, output, length
-          sleep 1
-        end
+        # Mix the tracklist
+        process = SoxMixer.new(tracks, output).run
+        sleep(1) while process.running?
+        raise SoxError, "error while mixing to #{output}" unless process.success?
 
-        raise SoxError, "error while mixing to #{output}" unless mixer.success?
-
-        length = Mp3Info.new(output).length rescue 0
-
+        # Waveform
+        length = Mp3Info.new(output).length rescue 0 # XXX
         Adelao::Waveform.generate(output, :width => length * 10)
 
         update_status key, :finished, output, length
@@ -65,7 +63,9 @@ class SoxWorker < BackgrounDRb::MetaWorker
         update_status key, :error, output, length
 
       ensure
-        files.each { |f| f.is_a?(Tempfile) ? f.close! : f.close }
+        # Cleanup
+        tracks.each { |track| track.file.is_a?(Tempfile) ? track.file.close! : track.file.close }
+        GC.start
       end
     end
   end
@@ -73,7 +73,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
   protected
     def update_status(key, status, output, length)
       @status_mutex.synchronize do
-        @worker_status[key] = {:status => status, :output => output, :length => length}
+        @worker_status[key] = {:status => status, :output => output, :length => length, :ts => Time.now}
       end
       register_status @worker_status
     end
