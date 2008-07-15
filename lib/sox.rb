@@ -58,7 +58,8 @@ class SoxMixer < Executable
   end
 
   def to_cmd
-    "sox -m " << @tracklist.map { |track| "-t #{track.format} -v 1.0 #{track.file.path}" }.join(' ') << " -t mp3 #@output"
+    #"sox -m " << @tracklist.map { |track| "-t #{track.format} -v 1.0 #{track.file.path}" }.join(' ') << " -t mp3 #@output"
+    "sox -m " << @tracklist.map { |track| "-t #{track.format} #{track.file.path}" }.join(' ') << " -t mp3 #@output"
   end
 
   class Track < Struct.new(:file, :format)
