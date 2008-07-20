@@ -29,7 +29,7 @@ class UploadController < ApplicationController
   protected
     def check_valid_upload
       upload = params[:Filedata]
-      unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /^audio\/mpeg$/
+      unless upload && upload.respond_to?(:size) && upload.size > 0 #&& upload.content_type =~ /^audio\/mpeg$/
         render :text => "invalid upload #{upload.content_type rescue nil} #{upload.size rescue nil}", :status => 400
       end
     end
