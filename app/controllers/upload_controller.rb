@@ -9,7 +9,7 @@ class UploadController < ApplicationController
     #
     # -vjt
     input = input_file(random_md5) << '.mp3'
-    FileUtils.cp params[:upload].path, input
+    FileUtils.cp params[:Filedata].path, input
 
     MiddleMan.ask_work :worker => :ffmpeg_worker, :worker_method => :run,
                        :data => {
@@ -28,7 +28,7 @@ class UploadController < ApplicationController
 
   protected
     def check_valid_upload
-      upload = params[:upload]
+      upload = params[:Filedata]
       unless upload && upload.respond_to?(:size) && upload.size > 0 && upload.content_type =~ /^audio\/mpeg$/
         render :text => "invalid upload #{upload.content_type rescue nil} #{upload.size rescue nil}", :status => 400
       end
