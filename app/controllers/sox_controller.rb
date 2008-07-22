@@ -7,7 +7,7 @@ class SoxController < ApplicationController
     MiddleMan.ask_work :worker => :sox_worker, :worker_method => :run,
                        :data => {
                           :key => @worker_key,
-                          :tracks => Tracklist.new(params[:song]),
+                          :tracks => Tracklist.new(params[:tracks]),
                           :output => random_output_file
                        }
 

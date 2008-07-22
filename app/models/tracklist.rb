@@ -1,22 +1,10 @@
-require 'rexml/document'
 
 class TracklistError < StandardError
 end
 
 class Tracklist < Array
-  # <song>
-  #   <track id="2" volume="0.5" balance="0" filename="7f095f59b1a167a01822e098336af509.mp3"/>
-  #   <track id="15" volume="0.5"  balance="0" filename="05dacfb908ee316529a363dec51afa1e.mp3"/>
-  # </song>
-  
-  def initialize(xml)
-    doc = REXML::Document.new(xml)
-    
-    raise TracklistError, 'invalid XML' if doc.root.nil? || doc.root.name != 'song'
-
-    doc.root.elements.each('track') do |track|
-      self.push Track.new(track.attributes.symbolize_keys)
-    end
+  def initialize(tracks)
+    self.replace(tracks.values.map { |attributes| Track.new(attributes.symbolize_keys) })
   end
 end
 
@@ -28,7 +16,7 @@ class Track
     @attributes.assert_valid_keys *Attributes
 
     unless Attributes.all? { |attr| @attributes.has_key?(attr) && !@attributes[attr].blank? }
-      raise TracklistError, 'incomplete track'
+      raise TracklistError, "incomplete track (attributes: #{@attributes.inspect})"
     end
 
     @attributes[:filename] = File.join(MP3_OUTPUT_DIR, @attributes[:filename])
