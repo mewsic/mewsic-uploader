@@ -18,7 +18,7 @@ class UploadController < ApplicationController
                          :output => random_output_file
                        }
 
-    redirect_to upload_status_path(:worker => @worker_key)
+    render_worker_status
   end
 
   def status
