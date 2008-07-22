@@ -4,18 +4,14 @@ ActionController::Routing::Routes.draw do |map|
   
   map.root :controller => "main"
 
-  map.connect '/encode_flv/:filename',      :controller => 'ffmpeg', :action => 'index', :filename => /[\w\d\.]+/
-  map.connect '/encode_flv/status/:worker', :controller => 'ffmpeg', :action => 'status', :worker => WorkerKeyRegExp
+  map.encode        '/encode_flv',                :controller => 'ffmpeg', :action => 'index',  :conditions => { :method => :post }
+  map.encode_status '/encode_flv/status/:worker', :controller => 'ffmpeg', :action => 'status', :worker => WorkerKeyRegExp
 
-  map.connect '/mix',                       :controller => 'sox',    :action => 'index', :conditions => { :method => :post }
-  map.connect '/mix/status/:worker',        :controller => 'sox',    :action => 'status', :worker => WorkerKeyRegExp
+  map.mix           '/mix',                       :controller => 'sox',    :action => 'index',  :conditions => { :method => :post }
+  map.mix_status    '/mix/status/:worker',        :controller => 'sox',    :action => 'status', :worker => WorkerKeyRegExp
 
-  map.connect '/upload',                    :controller => 'upload', :action => 'index', :conditions => { :method => :post }
-  map.connect '/upload/status/:worker',     :controller => 'upload', :action => 'status', :worker => WorkerKeyRegExp
-
-  # Allow downloading Web Service WSDL as a file with an extension
-  # instead of a file named 'wsdl'
-  #map.connect ':controller/service.wsdl', :action => 'wsdl'
+  map.upload        '/upload',                    :controller => 'upload', :action => 'index',  :conditions => { :method => :post }
+  map.upload_status '/upload/status/:worker',     :controller => 'upload', :action => 'status', :worker => WorkerKeyRegExp
 
   map.connect ':controller', :action => 'index'
 
