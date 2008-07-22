@@ -11,6 +11,7 @@ class StdOutputter
     puts "Executing #{self.to_cmd}"
     @thread = Thread.new do
       @output = IO.popen("%s 2>&1" % self.to_cmd) { |pipe| pipe.read }
+      @status = $?.exitstatus
       @running = false
       Thread.exit
     end
@@ -23,6 +24,6 @@ class StdOutputter
   end
 
   def success?
-    !@output.nil?
+    @status.zero?
   end
 end
