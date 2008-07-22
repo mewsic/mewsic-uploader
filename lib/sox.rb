@@ -12,7 +12,7 @@ class SoxAnalyzer < StdOutputter
   end
 
   def optimum_volume
-    @output.to_f * 95 / 100
+    @output.to_f * 90 / 100
   end
 
 end
