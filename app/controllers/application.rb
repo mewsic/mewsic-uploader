@@ -1,6 +1,8 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
+  before_filter :check_user_in_session
+
   def input_file(name)
     File.join(FLV_INPUT_DIR, name)
   end
@@ -23,6 +25,12 @@ class ApplicationController < ActionController::Base
   def render_worker_status
     respond_to do |format|
       format.xml { render :partial => 'shared/worker', :object => worker_status }
+    end
+  end
+
+  def check_user_in_session
+    unless session[:user].is_a?(Numeric)
+      redirect_to 'http://myousica.com'
     end
   end
 
