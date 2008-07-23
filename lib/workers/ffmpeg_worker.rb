@@ -31,6 +31,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
         process = SoxAnalyzer.new(input).run
         sleep(1) while process.running?
         raise EncodingError unless process.success?
+        raise EncodingError if process.optimum_volume.zero?
 
         # Normalization
         if process.optimum_volume != 1.0
