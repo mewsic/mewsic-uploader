@@ -1,7 +1,9 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
+require 'net/http'
+
 class ApplicationController < ActionController::Base
-  before_filter :check_user_in_session
+  before_filter :check_auth
 
   def input_file(name)
     File.join(FLV_INPUT_DIR, name)
@@ -28,10 +30,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def check_user_in_session
-    unless session[:user].is_a?(Numeric)
-      redirect_to 'http://myousica.com'
+  def check_auth
+    # Trust cookie sessions
+    if session[:user].is_a? Numeric
+      return
     end
+
+    # When uploading .. heck! Authorize to the main server
+    unless params[:id] && params[:token] && params[:id].to_i > 0 && params[:token] =~ /^\w+$/
+      redirect_to '/' and return
+    end
+
+    url = URI.parse "#{AUTH_SERVICE}/#{params[:token]}/#{params[:id]}"
+    unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path) }.is_a?(Net::HTTPSuccess)
+      redirect_to '/' and return
+    end
+
   end
 
 end

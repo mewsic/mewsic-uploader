@@ -1,6 +1,5 @@
 class UploadController < ApplicationController
   before_filter :check_valid_upload, :only => :index
-  session :cookie_only => false
 
   def index
     @worker_key = random_md5

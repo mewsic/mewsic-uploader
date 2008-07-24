@@ -27,3 +27,4 @@ config.action_controller.session = {
 
 FLV_INPUT_DIR = "/data/multitrack/shared/spool/"
 MP3_OUTPUT_DIR = "/data/multitrack/shared/audio/"
+AUTH_SERVICE = 'http://3e4693ef.myousica.com/multitrack/_'
