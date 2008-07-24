@@ -1,3 +1,4 @@
+require 'net/http'
 require 'tracklist'
 require 'sox'
 
@@ -56,9 +57,9 @@ class SoxWorker < BackgrounDRb::MetaWorker
         length = Mp3Info.new(output).length rescue 0 # XXX
         Adelao::Waveform.generate(output, :width => length * 10)
 
-        if params[:song_id]
+        if options[:song_id]
           filename = File.basename(output)
-          url = URI.parse "#{SONG_SERVICE}/#{params[:token]}/#{params[:id]}?filename=#{filename}&length=#{length}"
+          url = URI.parse "#{SONG_SERVICE}/#{options[:token]}/#{options[:user_id]}?filename=#{filename}&length=#{length}"
           unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path) }.is_a?(Net::HTTPSuccess)
             raise SoxError, "error while updating song filename"
           end
