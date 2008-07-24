@@ -1,7 +1,7 @@
 # Filters added to this controller will be run for all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-  before_filter :check_user_in_session
+  # before_filter :check_user_in_session ## XXX FIXME
 
   def input_file(name)
     File.join(FLV_INPUT_DIR, name)
