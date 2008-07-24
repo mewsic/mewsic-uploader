@@ -8,7 +8,10 @@ class SoxController < ApplicationController
                        :data => {
                           :key => @worker_key,
                           :tracks => Tracklist.new(params[:tracks]),
-                          :output => random_output_file
+                          :output => random_output_file,
+                          :song_id => params[:song_id],
+                          :token => params[:token],
+                          :user_id => params[:id]
                        }
 
     render_worker_status

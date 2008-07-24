@@ -22,3 +22,4 @@ config.action_mailer.raise_delivery_errors = false
 FLV_INPUT_DIR = "#{RAILS_ROOT}/tmp/spool"
 MP3_OUTPUT_DIR = "#{RAILS_ROOT}/tmp/audio"
 AUTH_SERVICE = 'http://localhost:3000/multitrack/_'
+SONG_SERVICE = 'http://localhost:3000/multitrack/s'

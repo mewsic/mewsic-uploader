@@ -3,7 +3,7 @@
 require 'net/http'
 
 class ApplicationController < ActionController::Base
-  before_filter :check_auth
+  #before_filter :check_auth
 
   def input_file(name)
     File.join(FLV_INPUT_DIR, name)
