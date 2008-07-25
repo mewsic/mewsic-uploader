@@ -19,7 +19,7 @@ class Track
       raise TracklistError, "incomplete track (attributes: #{@attributes.inspect})"
     end
 
-    @attributes[:filename] = File.join(MP3_OUTPUT_DIR, @attributes[:filename])
+    @attributes[:filename] = File.join(MP3_OUTPUT_DIR, File.basename(@attributes[:filename]))
     unless File.exists? @attributes[:filename]
       raise TracklistError, 'file not found'
     end
