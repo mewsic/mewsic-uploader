@@ -3,7 +3,7 @@
 require 'net/http'
 
 class ApplicationController < ActionController::Base
-  #before_filter :check_auth
+  before_filter :check_auth
 
   def input_file(name)
     File.join(FLV_INPUT_DIR, name)
@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
       redirect_to '/' and return
     end
 
-    url = URI.parse "#{AUTH_SERVICE}/#{params[:token]}/#{params[:id]}"
+    url = URI.parse "#{AUTH_SERVICE}/#{params[:id]}?token=#{params[:token]}"
     unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path) }.is_a?(Net::HTTPSuccess)
       redirect_to '/' and return
     end
