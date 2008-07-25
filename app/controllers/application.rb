@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
   def render_worker_status
     respond_to do |format|
-      format.xml { render :partial => 'shared/worker', :object => worker_status }
+      format.xml { render :partial => 'shared/worker', :object => worker_status, :status => :ok }
     end
   end
 
