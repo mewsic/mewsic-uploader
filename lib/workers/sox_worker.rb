@@ -31,6 +31,8 @@ class SoxWorker < BackgrounDRb::MetaWorker
         # Apply effects
         tracks = []
         tracklist.each do |track|
+          next if track.volume.zero?
+
           if SoxEffect.needed?(track)
             # If an effect is requested, execute it
             file = Tempfile.new 'effect'
@@ -48,10 +50,12 @@ class SoxWorker < BackgrounDRb::MetaWorker
           end
         end
 
+        raise SoxError, "empty tracklist" if tracks.empty?
+
         # Mix the tracklist
         process = SoxMixer.new(tracks, output).run
         sleep(1) while process.running?
-        raise SoxError, "error while mixing to #{output}" unless process.success?
+        raise SoxError, "error while mixing to #{File.basename(output)}" unless process.success?
 
         # Waveform
         length = Mp3Info.new(output).length rescue 0 # XXX
