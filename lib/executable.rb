@@ -2,25 +2,19 @@ class Executable
   attr_reader :status
 
   def run
-    return unless @status == :idle
-
-    @status = :running
-    puts "Executing #{self.to_cmd}"
-    @pid = fork { exec(self.to_cmd) }
-
+    unless @status
+      puts "Executing #{self.to_cmd}"
+      Process.wait(fork { exec(self.to_cmd) })
+      @status = $?.exitstatus
+    end
     return self
   end
 
-  def running?
-    if @pid && Process.wait(@pid, Process::WNOHANG)
-      @pid = nil
-      @status = (File.exists?(@output) && File.size(@output) > 0) ? :finished : :error
-    end
-
-    @status == :running
+  def success?
+    @status.zero?
   end
 
-  def success?
-    @status == :finished
+  def error
+    @status = -1
   end
 end

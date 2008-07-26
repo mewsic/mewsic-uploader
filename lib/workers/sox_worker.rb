@@ -38,7 +38,6 @@ class SoxWorker < BackgrounDRb::MetaWorker
             file = Tempfile.new 'effect'
 
             process = SoxEffect.new(track, file.path).run
-            sleep(1) while process.running?
             raise SoxError, "error while processing #{track.filename}" unless process.success?
 
             tracks << SoxMixer::Track.new(file, 'wav')
@@ -54,7 +53,6 @@ class SoxWorker < BackgrounDRb::MetaWorker
 
         # Mix the tracklist
         process = SoxMixer.new(tracks, output).run
-        sleep(1) while process.running?
         raise SoxError, "error while mixing to #{File.basename(output)}" unless process.success?
 
         # Waveform

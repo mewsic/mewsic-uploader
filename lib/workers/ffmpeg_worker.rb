@@ -29,7 +29,6 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
 
         # Analysis
         process = SoxAnalyzer.new(input).run
-        sleep(1) while process.running?
         raise EncodingError unless process.success?
         raise EncodingError if process.optimum_volume.zero?
 
@@ -38,7 +37,6 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
           tempfile = Tempfile.new 'normalizer'
 
           process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume).run
-          sleep(1) while process.running?
           raise EncodingError unless process.success?
 
           File.unlink(input)
@@ -47,7 +45,6 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
 
         # Encoding
         process = FFmpeg.new(input, output).run
-        sleep(1) while process.running?
         raise EncodingError unless process.success?
 
         # Waveform

@@ -5,6 +5,7 @@ class SoxAnalyzer < StdOutputter
 
   def initialize(input)
     @input = input
+    error unless File.exists?(input)
   end
 
   def to_cmd
@@ -21,7 +22,7 @@ class SoxNormalizer < Executable
 
   def initialize(input, output, volume)
     @input, @output, @volume = input, output, volume
-    @status = :idle
+    error unless File.exists?(input)
   end
 
   def to_cmd
@@ -34,7 +35,7 @@ class SoxEffect < Executable
 
   def initialize(track, output)
     @track, @output = track, output
-    @status = File.exists?(track.filename) ? :idle : :error
+    error unless File.exists?(track.filename)
   end
 
   def self.needed?(track)
@@ -54,7 +55,7 @@ class SoxMixer < Executable
 
   def initialize(tracklist, output)
     @tracklist, @output = tracklist, output
-    @status = tracklist.all? { |track| File.exists? track.file.path } ? :idle : :error
+    error unless tracklist.all? { |track| File.exists? track.file.path }
   end
 
   def to_cmd

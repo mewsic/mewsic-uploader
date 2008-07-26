@@ -3,7 +3,7 @@ require 'executable'
 class FFmpeg < Executable
   def initialize(input, output)
     @input, @output = input, output
-    @status = File.exists?(@input) ? :idle : :error
+    error unless File.exists?(@input)
   end
 
   def to_cmd
