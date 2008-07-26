@@ -52,16 +52,25 @@ class SoxWorker < BackgrounDRb::MetaWorker
         raise SoxError, "empty tracklist" if tracks.empty?
 
         # Mix the tracklist
-        process = SoxMixer.new(tracks, output).run
-        raise SoxError, "error while mixing to #{File.basename(output)}" unless process.success?
+        temp = Tempfile.new 'mixer'
+        process = SoxMixer.new(tracks, temp.path).run
+        raise SoxError, "error while mixing to temporary file" unless process.success?
+
+        # Encoding
+        process = FFmpeg.new(temp.path, output).run
+        raise SoxError, "error while encoding to #{File.basename(output)}" unless process.success?
+
+        # Length
+        length = Mp3Info.new(output).length rescue 0 # XXX
 
         # Waveform
-        length = Mp3Info.new(output).length rescue 0 # XXX
-        Adelao::Waveform.generate(output, :width => length * 10)
+        Adelao::Waveform.generate(temp.path, output.sub('.mp3', '.png'), :width => length * 10)
+
+        temp.close!
 
         if options[:song_id]
           filename = File.basename(output)
-          url = URI.parse "#{SONG_SERVICE}/#{options[:user_id]}?token=#{options[:token]}&song_id=#{options[:song_id]}&filename=#{filename}&length=#{length}"
+          url = URI.parse "#{SONG_SERVICE}/#{options[:user_id]}?song_id=#{options[:song_id]}&filename=#{filename}&length=#{length}"
           unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path + '?' + url.query) }.is_a?(Net::HTTPSuccess)
             raise SoxError, "error while updating song filename"
           end

@@ -33,23 +33,21 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
         raise EncodingError if process.optimum_volume.zero?
 
         # Normalization
-        if process.optimum_volume != 1.0
-          tempfile = Tempfile.new 'normalizer'
-
-          process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume).run
-          raise EncodingError unless process.success?
-
-          File.unlink(input)
-          input = tempfile.path
-        end
+        tempfile = Tempfile.new 'normalizer'
+        process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume).run
+        raise EncodingError unless process.success?
+        File.unlink(input)
+        input = tempfile.path
 
         # Encoding
         process = FFmpeg.new(input, output).run
         raise EncodingError unless process.success?
 
-        # Waveform
+        # Length
         length = Mp3Info.new(output).length rescue 0 # XXX
-        Adelao::Waveform.generate(output, :width => length * 10)
+
+        # Waveform
+        Adelao::Waveform.generate(input, output.sub('.mp3', '.png'), :width => length * 10)
 
         # Finished
         update_status key, :finished, output, length
