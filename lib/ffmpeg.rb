@@ -22,6 +22,6 @@ class Wavepass < Executable
   end
 
   def to_cmd
-    "ffmpeg -i #@input #@output"
+    "ffmpeg -i #@input -f wav #@output"
   end
 end
