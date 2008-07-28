@@ -14,3 +14,14 @@ class FFmpeg < Executable
     "ffmpeg -i #@input -ar #{MP3_FREQ} -ac #{MP3_CHANNELS} #{quality} #{overwrite} #@output"
   end
 end
+
+class Wavepass < Executable
+  def initialize(input, output)
+    @input, @output = input, output
+    error unless File.exists?(@input)
+  end
+
+  def to_cmd
+    "ffmpeg -i #@input #@output"
+  end
+end

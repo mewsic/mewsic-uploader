@@ -3,13 +3,14 @@ require 'stdoutputter'
 
 class SoxAnalyzer < StdOutputter
 
-  def initialize(input)
+  def initialize(input, format = 'mp3')
     @input = input
+    @format = format
     error unless File.exists?(input)
   end
 
   def to_cmd
-    "sox -t mp3 %s -n stat -v" % @input
+    "sox -t #@format %s -n stat -v" % @input
   end
 
   def optimum_volume
