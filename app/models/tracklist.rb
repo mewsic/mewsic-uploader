@@ -4,7 +4,11 @@ end
 
 class Tracklist < Array
   def initialize(tracks)
-    self.replace(tracks.values.map { |attributes| Track.new(attributes.symbolize_keys) })
+    self.replace(tracks.values.map do |attributes|
+      attributes.symbolize_keys!
+      next if attributes[:filename].blank? # XXX
+      Track.new(attributes)
+    end.compact)
   end
 end
 
