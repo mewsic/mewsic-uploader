@@ -5,9 +5,8 @@ end
 class Tracklist < Array
   def initialize(tracks)
     self.replace(tracks.values.map do |attributes|
-      attributes.symbolize_keys!
-      next if attributes[:filename].blank? # XXX
-      Track.new(attributes)
+      next if attributes['filename'].blank? # XXX
+      Track.new(attributes.symbolize_keys)
     end.compact)
   end
 end
