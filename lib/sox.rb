@@ -10,7 +10,7 @@ class SoxAnalyzer < StdOutputter
   end
 
   def to_cmd
-    "sox -t #@format %s -n stat -v" % @input
+    "sox -t %s %s -n stat -v" % [@format, @input]
   end
 
   def optimum_volume
@@ -21,13 +21,13 @@ end
 
 class SoxNormalizer < Executable
 
-  def initialize(input, output, volume)
-    @input, @output, @volume = input, output, volume
+  def initialize(input, output, volume, format = 'mp3')
+    @input, @output, @volume, @format = input, output, volume, format
     error unless File.exists?(input)
   end
 
   def to_cmd
-    "sox -v %f -t mp3 %s -t wav %s" % [@volume, @input, @output]
+    "sox -v %f -t %s %s -t wav %s" % [@volume, @format, @input, @output]
   end
 
 end

@@ -45,7 +45,7 @@ class FfmpegWorker < BackgrounDRb::MetaWorker
 
         # Normalization
         tempfile = Tempfile.new 'normalizer'
-        process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume).run
+        process = SoxNormalizer.new(input, tempfile.path, process.optimum_volume, format).run
         raise EncodingError, 'failed to normalize' unless process.success?
         File.unlink(input)
         input = tempfile.path
