@@ -25,9 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_worker_status
-    respond_to do |format|
-      format.xml { render :partial => 'shared/worker', :object => worker_status, :status => :ok }
-    end
+    render :partial => 'shared/worker', :object => worker_status, :status => :ok
   end
 
   def check_auth
