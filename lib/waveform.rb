@@ -9,6 +9,7 @@ module Adelao
       :width => 800,
       :height => 50
     }
+    FlashMinWidth = 500
     FlashMaxWidth = 2879
 
     def self.generate(input, output, options = {})
@@ -16,6 +17,7 @@ module Adelao
 
       options.assert_valid_keys :linecolor, :backgroundcolor, :zerocolor, :type, :padding, :width, :height, :verbose
 
+      options[:width] = FlashMinWidth if options[:width] < FlashMinWidth # XXX don't generate small images
       options[:width] = FlashMaxWidth if options[:width] > FlashMaxWidth # XXX flash hack
       options_string = options.map { |k,v| " --#{k}=#{v}" }
 
