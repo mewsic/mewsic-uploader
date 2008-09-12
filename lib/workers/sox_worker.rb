@@ -72,7 +72,7 @@ class SoxWorker < BackgrounDRb::MetaWorker
           filename = File.basename(output)
           url = URI.parse "#{SONG_SERVICE}/#{options[:user_id]}?song_id=#{options[:song_id]}&filename=#{filename}&length=#{length}"
           unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path + '?' + url.query) }.is_a?(Net::HTTPSuccess)
-            raise SoxError, "error while updating song filename"
+            raise SoxError, "error while updating song filename; #{$!}"
           end
         end
 
