@@ -1,4 +1,3 @@
-# Please install the Engine Yard Capistrano gem
 # gem install eycap --source http://gems.engineyard.com
 
 require 'eycap/recipes'
@@ -12,17 +11,18 @@ require 'eycap/recipes'
 
 set :keep_releases, 5
 set :application,   'multitrack'
-set :repository,    'https://svn1.hosted-projects.com/medlar/myousica/myousica/multitrack_server'
-set :scm_username,  'ey'
-set :scm_password,  'eSkeWeD214'
+set :repository,    'git@multitrack_github.com:vjt/multitrack-server.git'
 set :user,          'adelaosrl'
 set :password,      'dshUak8s'
 set :deploy_to,     "/data/#{application}"
 set :deploy_via,    :filtered_remote_cache
 set :repository_cache,    "/var/cache/engineyard/#{application}"
 set :monit_group,   'multitrack'
-set :scm,           :subversion
-#
+set :scm,           :git
+
+# This will execute the Git revision parsing on the *remote* server rather than locally
+set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
+
 set :production_database,'multitrack_production'
 set :production_dbhost, 'mysql50-3-master'
 #
@@ -87,4 +87,3 @@ after "deploy:update_code","deploy:symlink_configs"
 
 # uncomment the following to have a database backup done before every migration
 # before "deploy:migrate", "db:dump"
-
