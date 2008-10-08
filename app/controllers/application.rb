@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     end
 
     url = URI.parse "#{AUTH_SERVICE}/#{params[:id]}?token=#{params[:token]}"
-    unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path) }.is_a?(Net::HTTPSuccess)
+    unless Net::HTTP.start(url.host, url.port) { |http| http.post(url.path, url.query) }.is_a?(Net::HTTPSuccess)
       redirect_to '/' and return
     end
 
