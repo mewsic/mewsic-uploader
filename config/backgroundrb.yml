@@ -7,9 +7,16 @@
     :port: 11111     # use port 11111
     :log: foreground # foreground mode,print log messages on console
 
+:staging:
+  :backgroundrb:
+    :ip: 127.0.0.1
+    :port: 22222      # use port 22222
+    :lazy_load: true  # do not load models eagerly
+    :debug_log: false # disable log workers and other logging   
+
 :production:
   :backgroundrb:
-    :ip: 10.2.128.222
+    :ip: 127.0.0.1
     :port: 22222      # use port 22222
     :lazy_load: true  # do not load models eagerly
     :debug_log: false # disable log workers and other logging   
