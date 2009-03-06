@@ -13,8 +13,8 @@ config.whiny_nils = true
 config.action_controller.consider_all_requests_local = true
 config.action_controller.perform_caching             = false
 config.action_controller.session = {
-  :session_key => '_myousica_session_key',
-  :secret      => '02cedf3882e78b5a99c0bec5cc75c3fc'
+  :session_key => '_mewsic_sess',
+  :secret      => 'aef2c038e1d6c4d1760f80931fd4b5bb6012bfcc'
 }
 
 # Tell ActionMailer not to deliver emails to the real world.

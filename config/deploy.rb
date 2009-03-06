@@ -11,23 +11,11 @@ require 'eycap/recipes'
 
 set :keep_releases, 5
 set :application,   'multitrack'
-set :repository,    'git@multitrack_github.com:vjt/multitrack-server.git'
-set :user,          'adelaosrl'
-set :password,      'dshUak8s'
-set :deploy_to,     "/data/#{application}"
-set :deploy_via,    :filtered_remote_cache
-set :repository_cache,    "/var/cache/engineyard/#{application}"
-set :monit_group,   'multitrack'
 set :scm,           :git
 
 # This will execute the Git revision parsing on the *remote* server rather than locally
 set :real_revision, 			lambda { source.query_revision(revision) { |cmd| capture(cmd) } }
 
-set :production_database,'multitrack_production'
-set :production_dbhost, 'mysql50-3-master'
-#
-set :dbuser, 'adelaosrl_db'
-set :dbpass, '4asrsWrh'
 
 # comment out if it gives you trouble. newest net/ssh needs this set.
 ssh_options[:paranoid] = false
@@ -41,18 +29,35 @@ ssh_options[:paranoid] = false
 # be used to single out a specific subset of boxes in a particular role, like
 # :primary => true.
 
-task :production do
-  
-  role :web, '65.74.174.196:8222' # mongrel, mongrel
-  role :app, '65.74.174.196:8222', :mongrel => true, :mongrel => true
-  role :db, '65.74.174.196:8222', :primary => true
-  role :brb, '65.74.174.196:8221', :no_release => true
-  
-  #role :app, '65.74.174.196:8222', :no_release => true, :mongrel => true, :mongrel => true
-  
-  set :rails_env, 'production'
-  set :environment_database, defer { production_database }
-  set :environment_dbhost, defer { production_dbhost }
+task :staging do
+  set :user, 'mewsic'
+  set :password, 'plies25}chis'
+  set :use_sudo, false
+
+  #set :dbuser, 'mewsic'
+  #set :dbpass, 'Leann82-full'
+  #set :dbname, 'mewsic_staging'
+  #set :dbhost, 'localhost'
+
+  set :deploy_to, "/srv/rails/#{application}"
+  set :deploy_via,    :filtered_remote_cache
+  set :repository,    'git@github.com:vjt/multitrack-server.git'
+  set :repository_cache,    "/var/cache/rails/#{application}"
+
+  role :web, '89.97.211.109'
+  role :app, '89.97.211.109'
+  role :db, '89.97.211.109', :primary => :true
+  role :brb, '89.97.211.109'
+
+  set :rails_env, 'staging'
+  set :environment_database, defer { dbname }
+  set :environment_dbhost, defer { dbhost }
+
+  namespace :deploy do
+    task :restart do
+      run "touch #{current_path}/tmp/restart.txt"
+    end
+  end
 end
 
 # =============================================================================

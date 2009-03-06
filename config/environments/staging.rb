@@ -15,8 +15,8 @@ config.action_controller.perform_caching             = true
 # If you change this key, all old sessions will become invalid!
 config.action_controller.session = {
   :session_key => '_mewsic_sess',
-  :session_domain => '.mewsic.com',
-  :secret      => 'b0bf476cf838ea5bdb60fcce1209d412c01d631f'
+  :session_domain => 'mewsic.stage.lime5.it',
+  :secret      => 'e5ccedb91c7693cf86e16a550f47cb7a83a879fb'
 }
 
 # Enable serving of images, stylesheets, and javascripts from an asset server
@@ -25,7 +25,7 @@ config.action_controller.session = {
 # Disable delivery errors if you bad email addresses should just be ignored
 # config.action_mailer.raise_delivery_errors = false
 
+MP3_OUTPUT_DIR = "/srv/multitrack/shared/spool/"
 FLV_INPUT_DIR = "/srv/red5/mewsic/streams/"
-MP3_OUTPUT_DIR = "/srv/rails/mewsic/shared/audio/"
-AUTH_SERVICE = 'http://mewsic.com/multitrack/_'
-SONG_SERVICE = 'http://mewsic.com/multitrack/s'
+AUTH_SERVICE = 'http://mewsic.stage.lime5.it/multitrack/_'
+SONG_SERVICE = 'http://mewsic.stage.lime5.it/multitrack/s'
