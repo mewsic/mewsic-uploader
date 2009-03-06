@@ -27,5 +27,7 @@ config.action_controller.session = {
 
 FLV_INPUT_DIR = "/srv/red5/mewsic/streams/"
 MP3_OUTPUT_DIR = "/srv/rails/mewsic/shared/audio/"
-AUTH_SERVICE = 'http://mewsic.com/multitrack/_'
-SONG_SERVICE = 'http://mewsic.com/multitrack/s'
+
+MAIN_SERVER = 'http://mewsic.com/'
+AUTH_SERVICE = MAIN_SERVER + 'multitrack/_'
+SONG_SERVICE = MAIN_SERVER + 'multitrack/s'

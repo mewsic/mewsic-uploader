@@ -27,5 +27,8 @@ config.action_controller.session = {
 
 MP3_OUTPUT_DIR = "/srv/multitrack/shared/spool/"
 FLV_INPUT_DIR = "/srv/red5/mewsic/streams/"
-AUTH_SERVICE = 'http://mewsic.stage.lime5.it/multitrack/_'
-SONG_SERVICE = 'http://mewsic.stage.lime5.it/multitrack/s'
+
+MAIN_SERVER = 'http://mewsic.stage.lime5.it/'
+AUTH_SERVICE = MAIN_SERVER + 'multitrack/_'
+SONG_SERVICE = MAIN_SERVER + 'multitrack/s'
+
