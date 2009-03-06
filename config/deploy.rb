@@ -10,7 +10,7 @@ require 'eycap/recipes'
 # correspond to. The :deploy_to variable must be the root of the application.
 
 set :keep_releases, 5
-set :application,   'multitrack'
+set :application,   'uploader'
 set :scm,           :git
 
 # This will execute the Git revision parsing on the *remote* server rather than locally
@@ -41,7 +41,7 @@ task :staging do
 
   set :deploy_to, "/srv/rails/#{application}"
   set :deploy_via,    :filtered_remote_cache
-  set :repository,    'git@github.com:vjt/multitrack-server.git'
+  set :repository,    'git@github.com:lime5/mewsic-uploader.git'
   set :repository_cache,    "/var/cache/rails/#{application}"
 
   role :web, '89.97.211.109'
