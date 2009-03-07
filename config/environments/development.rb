@@ -13,7 +13,6 @@ config.action_controller.session = {
   :secret      => 'e5ccedb91c7693cf86e16a550f47cb7a83a879fb'
 }
 
-config.action_view.cache_template_extensions         = false
 config.action_view.debug_rjs                         = true
 
 # Don't care if the mailer can't send

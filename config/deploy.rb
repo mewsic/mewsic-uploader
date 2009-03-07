@@ -78,8 +78,8 @@ end
 before "deploy:restart", "restart_bgrb"
 desc "restart the backgroundrb server"
 task :restart_bgrb, :roles => [:brb] do
-  run "cd #{latest_release}; RAILS_ENV=#{rails_env} ruby script/backgroundrb stop || true"
-  run "cd #{latest_release}; RAILS_ENV=#{rails_env} nohup ruby script/backgroundrb start >/dev/null 2>&1"
+  run "cd #{latest_release}; script/backgroundrb stop || true"
+  run "cd #{latest_release}; nohup script/backgroundrb start >/dev/null 2>&1"
 end
 
 # =============================================================================
