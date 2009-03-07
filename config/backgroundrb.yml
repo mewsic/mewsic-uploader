@@ -1,22 +1,6 @@
 :backgroundrb:
-  :environment: production
-
-:development:
-  :backgroundrb:
-    :ip: 127.0.0.1   # bind to localhost
-    :port: 11111     # use port 11111
-    :log: foreground # foreground mode,print log messages on console
-
-:staging:
-  :backgroundrb:
-    :ip: 127.0.0.1
-    :port: 22222      # use port 22222
-    :lazy_load: true  # do not load models eagerly
-    :debug_log: false # disable log workers and other logging   
-
-:production:
-  :backgroundrb:
-    :ip: 127.0.0.1
-    :port: 22222      # use port 22222
-    :lazy_load: true  # do not load models eagerly
-    :debug_log: false # disable log workers and other logging   
+  :environment: staging
+  :ip: 127.0.0.1
+  :port: 22222
+  :debug_log: true
+  :persistent_disabled: true

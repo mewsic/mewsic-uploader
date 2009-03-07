@@ -12,7 +12,7 @@ class Tracklist < Array
 end
 
 class Track
-  Attributes = [:id, :filename, :volume, :balance]
+  Attributes = [:id, :filename, :volume, :balance] unless defined? Attributes
 
   def initialize(attributes)
     @attributes = attributes

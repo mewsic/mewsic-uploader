@@ -34,10 +34,10 @@ task :staging do
   set :password, 'plies25}chis'
   set :use_sudo, false
 
-  #set :dbuser, 'mewsic'
-  #set :dbpass, 'Leann82-full'
-  #set :dbname, 'mewsic_staging'
-  #set :dbhost, 'localhost'
+  set :dbuser, 'uploader'
+  set :dbpass, 'gesu{}pazzo'
+  set :dbname, 'uploader_staging'
+  set :dbhost, 'localhost'
 
   set :deploy_to, "/srv/rails/#{application}"
   set :deploy_via,    :filtered_remote_cache

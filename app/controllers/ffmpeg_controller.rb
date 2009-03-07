@@ -12,12 +12,12 @@ class FfmpegController < ApplicationController
 
     @worker_key = random_md5
 
-    MiddleMan.ask_work :worker => :ffmpeg_worker, :worker_method => :run,
-                       :data => {
-                         :key => @worker_key,
-                         :input => input,
-                         :output => random_output_file
-                       }
+    MiddleMan.worker(:ffmpeg_worker).async_run(
+      :arg => {
+        :key => @worker_key,
+        :input => input,
+        :output => random_output_file
+      })
 
     render_worker_status
   end
@@ -29,7 +29,7 @@ class FfmpegController < ApplicationController
 
   private
     def worker_status
-      MiddleMan.worker(:ffmpeg_worker).ask_status[@worker_key] || Hash.new('')
+      MiddleMan.worker(:ffmpeg_worker).ask_result(@worker_key) || Hash.new('')
     end
 
 end
