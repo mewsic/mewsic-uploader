@@ -1,6 +1,7 @@
 require 'net/http'
 require 'tracklist'
 require 'sox'
+require 'ffmpeg'
 
 class SoxError < StandardError
 end

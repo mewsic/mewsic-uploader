@@ -1,3 +1,4 @@
+require 'sox'
 require 'ffmpeg'
 require 'waveform'
 
