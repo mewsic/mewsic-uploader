@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/backgroundrb/!svn/ver/326/trunk/test/server
+END
+test_meta_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/backgroundrb/!svn/ver/326/trunk/test/server/test_meta_worker.rb
+END
+test_result_storage.rb
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/backgroundrb/!svn/ver/326/trunk/test/server/test_result_storage.rb
+END
+test_cron_trigger.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/test/server/test_cron_trigger.rb
+END
+test_master_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/backgroundrb/!svn/ver/326/trunk/test/server/test_master_worker.rb
+END
+test_master_proxy.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/test/server/test_master_proxy.rb
+END

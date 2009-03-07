@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/backgroundrb/!svn/ver/330/trunk/generators/bdrb_migration
+END
+USAGE
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/backgroundrb/!svn/ver/330/trunk/generators/bdrb_migration/USAGE
+END
+bdrb_migration_generator.rb
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/backgroundrb/!svn/ver/330/trunk/generators/bdrb_migration/bdrb_migration_generator.rb
+END

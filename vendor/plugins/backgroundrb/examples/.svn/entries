@@ -1,0 +1,70 @@
+8
+
+dir
+331
+http://svn.devjavu.com/backgroundrb/trunk/examples
+http://svn.devjavu.com/backgroundrb
+
+
+
+2008-10-06T03:52:22.292911Z
+328
+gethemant@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+69d54aea-511f-0410-a924-81c4482807e4
+
+backgroundrb.yml
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+3ce6bcf47ee299f8e80f4f9442d92efd
+2008-10-06T03:52:22.292911Z
+328
+gethemant@gmail.com
+
+god_worker.rb
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+48a0bfd4cf6b659914a2095576b7390a
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+foo_controller.rb
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+5570b5a9ec1233d91579534be1764dd7
+2008-08-10T10:34:20.343473Z
+327
+gethemant@gmail.com
+
+worker_tests
+dir
+
+workers
+dir
+

@@ -1,0 +1,163 @@
+8
+
+dir
+331
+http://svn.devjavu.com/backgroundrb/trunk
+http://svn.devjavu.com/backgroundrb
+
+
+
+2008-10-14T10:51:23.617917Z
+330
+gethemant@gmail.com
+has-props
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+69d54aea-511f-0410-a924-81c4482807e4
+
+test
+dir
+
+app
+dir
+
+LICENSE
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+5b2c121c22ed2a7cc1803536e24a6c71
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+Rakefile
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+717f08e297bd518c4e548db475515284
+2008-10-06T03:52:22.292911Z
+328
+gethemant@gmail.com
+
+tasks
+dir
+
+ChangeLog
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+23f9631e904f6204783e8e5035f049fc
+2008-10-06T03:52:22.292911Z
+328
+gethemant@gmail.com
+
+.svnignore
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+a6f557266de58809cb43851ae3246837
+2008-03-12T01:30:43.641870Z
+323
+gethemant@gmail.com
+
+README
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+a6c8afa516435b927dc07b3ede24ebfc
+2008-10-06T03:52:22.292911Z
+328
+gethemant@gmail.com
+
+script
+dir
+
+init.rb
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+9314f3451dc129b42ca4b74137cda2bb
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+config
+dir
+
+lib
+dir
+
+server
+dir
+
+install.rb
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+cbe738c10eba4ae2da8c6859c9723e44
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+generators
+dir
+
+MIT-LICENSE
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+af324c0135cb2df6c57f671abf3efc26
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+uninstall.rb
+file
+
+
+
+
+2009-03-07T04:40:58.000000Z
+2a5fc883fe7f8dfe22ced24643d59ad4
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+examples
+dir
+

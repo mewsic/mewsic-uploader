@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/backgroundrb/!svn/ver/330/trunk/lib/backgroundrb
+END
+bdrb_config.rb
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/backgroundrb/!svn/ver/329/trunk/lib/backgroundrb/bdrb_config.rb
+END
+bdrb_conn_error.rb
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/backgroundrb/!svn/ver/328/trunk/lib/backgroundrb/bdrb_conn_error.rb
+END
+rails_worker_proxy.rb
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/backgroundrb/!svn/ver/330/trunk/lib/backgroundrb/rails_worker_proxy.rb
+END
+bdrb_client_helper.rb
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/backgroundrb/!svn/ver/326/trunk/lib/backgroundrb/bdrb_client_helper.rb
+END
+bdrb_job_queue.rb
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/backgroundrb/!svn/ver/328/trunk/lib/backgroundrb/bdrb_job_queue.rb
+END
+bdrb_connection.rb
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/backgroundrb/!svn/ver/327/trunk/lib/backgroundrb/bdrb_connection.rb
+END
+bdrb_cluster_connection.rb
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/backgroundrb/!svn/ver/327/trunk/lib/backgroundrb/bdrb_cluster_connection.rb
+END
+bdrb_start_stop.rb
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/backgroundrb/!svn/ver/330/trunk/lib/backgroundrb/bdrb_start_stop.rb
+END

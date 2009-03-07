@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/backgroundrb/!svn/ver/327/trunk/examples/workers
+END
+xmpp_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/backgroundrb/!svn/ver/326/trunk/examples/workers/xmpp_worker.rb
+END
+server_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/backgroundrb/!svn/ver/326/trunk/examples/workers/server_worker.rb
+END
+rss_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/backgroundrb/!svn/ver/327/trunk/examples/workers/rss_worker.rb
+END
+world_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/examples/workers/world_worker.rb
+END
+error_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/examples/workers/error_worker.rb
+END
+god_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/backgroundrb/!svn/ver/326/trunk/examples/workers/god_worker.rb
+END
+renewal_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/backgroundrb/!svn/ver/326/trunk/examples/workers/renewal_worker.rb
+END
+model_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/examples/workers/model_worker.rb
+END
+foo_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/backgroundrb/!svn/ver/327/trunk/examples/workers/foo_worker.rb
+END

@@ -1,0 +1,34 @@
+8
+
+dir
+331
+http://svn.devjavu.com/backgroundrb/trunk/app
+http://svn.devjavu.com/backgroundrb
+
+
+
+2008-07-13T15:01:18.235571Z
+326
+gethemant@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+69d54aea-511f-0410-a924-81c4482807e4
+
+controller
+dir
+
+models
+dir
+

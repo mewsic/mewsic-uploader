@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/backgroundrb/!svn/ver/330/trunk/server/lib
+END
+bdrb_server_helper.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/server/lib/bdrb_server_helper.rb
+END
+meta_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/backgroundrb/!svn/ver/328/trunk/server/lib/meta_worker.rb
+END
+trigger.rb
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/backgroundrb/!svn/ver/326/trunk/server/lib/trigger.rb
+END
+cron_trigger.rb
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/backgroundrb/!svn/ver/326/trunk/server/lib/cron_trigger.rb
+END
+invalid_dump_error.rb
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/backgroundrb/!svn/ver/326/trunk/server/lib/invalid_dump_error.rb
+END
+master_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/backgroundrb/!svn/ver/330/trunk/server/lib/master_worker.rb
+END
+bdrb_thread_pool.rb
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/backgroundrb/!svn/ver/326/trunk/server/lib/bdrb_thread_pool.rb
+END
+log_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/backgroundrb/!svn/ver/326/trunk/server/lib/log_worker.rb
+END
+bdrb_result_storage.rb
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/backgroundrb/!svn/ver/326/trunk/server/lib/bdrb_result_storage.rb
+END
+master_proxy.rb
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/backgroundrb/!svn/ver/328/trunk/server/lib/master_proxy.rb
+END

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/backgroundrb/!svn/ver/330/trunk/script
+END
+load_worker_env.rb
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/backgroundrb/!svn/ver/327/trunk/script/load_worker_env.rb
+END
+backgroundrb
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/backgroundrb/!svn/ver/328/trunk/script/backgroundrb
+END
+bdrb_test_helper.rb
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/backgroundrb/!svn/ver/330/trunk/script/bdrb_test_helper.rb
+END

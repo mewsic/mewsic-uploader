@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/backgroundrb/!svn/ver/328/trunk/examples
+END
+backgroundrb.yml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/backgroundrb/!svn/ver/328/trunk/examples/backgroundrb.yml
+END
+god_worker.rb
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/backgroundrb/!svn/ver/326/trunk/examples/god_worker.rb
+END
+foo_controller.rb
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/backgroundrb/!svn/ver/327/trunk/examples/foo_controller.rb
+END
