@@ -12,7 +12,7 @@ class Tracklist < Array
 end
 
 class Track
-  Attributes = [:id, :filename, :volume, :balance] unless defined? Attributes
+  Attributes = [:id, :filename, :volume] unless defined? Attributes
 
   def initialize(attributes)
     @attributes = attributes
@@ -29,7 +29,6 @@ class Track
 
     @attributes[:id] = @attributes[:id].to_i
     @attributes[:volume] = @attributes[:volume].to_f
-    @attributes[:balance] = @attributes[:balance].to_f
   end
 
   private

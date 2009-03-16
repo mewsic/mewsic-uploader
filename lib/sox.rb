@@ -40,13 +40,12 @@ class SoxEffect < Executable
   end
 
   def self.needed?(track)
-    track.volume != 1.0 || track.balance != 0.0
+    track.volume != 1.0
   end
 
   def to_cmd
     "sox %s -t mp3 #{@track.filename} -t wav #@output %s" % [
-      ("-v #{@track.volume}" if @track.volume != 1.0),
-      ("pan #{@track.balance}" if @track.balance != 0.0)
+      ("-v #{@track.volume}" if @track.volume != 1.0)
     ]
   end
 
