@@ -29,5 +29,3 @@ FLV_INPUT_DIR = "/srv/red5/mewsic/streams/"
 MP3_OUTPUT_DIR = "/srv/rails/mewsic/shared/audio/"
 
 MAIN_SERVER = 'http://mewsic.com/'
-AUTH_SERVICE = MAIN_SERVER + 'multitrack/_'
-SONG_SERVICE = MAIN_SERVER + 'multitrack/s'

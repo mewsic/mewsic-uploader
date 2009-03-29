@@ -58,6 +58,10 @@ MP3_QUALITY = 5 # quality setting for VBR. default n=4.  0=high quality,bigger f
 MP3_CHANNELS = 2
 MP3_OVERWRITE = false
 
+AUTH_SERVICE = MAIN_SERVER + 'multitrack/_'
+SONG_SERVICE = MAIN_SERVER + 'multitrack/s'
+TRACK_SERVICE = MAIN_SERVER + 'multitrack/t'
+
 require 'md5'
 require 'fileutils'
 require 'mp3info-cli'
