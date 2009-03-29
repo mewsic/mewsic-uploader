@@ -1,6 +1,8 @@
 require 'sox'
 require 'ffmpeg'
 require 'waveform'
+require 'services'
+require 'ruby-debug'
 
 class EncodingError < StandardError
 end
@@ -41,7 +43,7 @@ private
       # Analysis
       process = SoxAnalyzer.new(input, format).run
       raise EncodingError, 'failed to analyze wave' unless process.success?
-      raise EncodingError if process.optimum_volume.zero?
+      raise EncodingError if process.optimum_volume.zero? # Unrecognized file format
 
       # Normalization
       tempfile = Tempfile.new 'normalizer'
@@ -60,10 +62,15 @@ private
       # Waveform
       Adelao::Waveform.generate(input, output.sub('.mp3', '.png'), :width => length * 10)
 
+      if options[:track_id]
+        update_mixable :path => TRACK_SERVICE, :filename => File.basename(output),
+          :length => length, :track_id => options[:track_id], :user_id => options[:user_id]
+      end
+
       # Finished
       update_status key, :finished, output, length
 
-    rescue EncodingError
+    rescue EncodingError, ServiceError
       puts "exception: #{$!}"
       update_status key, :error, output, length
 

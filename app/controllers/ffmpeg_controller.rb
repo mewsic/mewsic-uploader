@@ -16,7 +16,9 @@ class FfmpegController < ApplicationController
       :arg => {
         :key => @worker_key,
         :input => input,
-        :output => random_output_file
+        :output => random_output_file,
+        :track_id => params[:track_id],
+        :user_id => params[:id]
       })
 
     render_worker_status

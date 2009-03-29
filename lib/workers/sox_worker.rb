@@ -2,6 +2,7 @@ require 'net/http'
 require 'tracklist'
 require 'sox'
 require 'ffmpeg'
+require 'services'
 
 class SoxError < StandardError
 end
@@ -69,16 +70,13 @@ private
       temp.close!
 
       if options[:song_id]
-        filename = File.basename(output)
-        url = URI.parse "#{SONG_SERVICE}/#{options[:user_id]}?song_id=#{options[:song_id]}&filename=#{filename}&length=#{length}"
-        unless Net::HTTP.start(url.host, url.port) { |http| http.get(url.path + '?' + url.query) }.is_a?(Net::HTTPSuccess)
-          raise SoxError, "error while updating song filename; #{$!}"
-        end
+        update_mixable :path => SONG_SERVICE, :filename => File.basename(output), 
+          :length => length, :song_id => options[:song_id], :user_id => options[:user_id]
       end
 
       update_status key, :finished, output, length
 
-    rescue SoxError
+    rescue SoxError, ServiceError
       puts "exception: #{$!}"
       update_status key, :error, output, length
 
